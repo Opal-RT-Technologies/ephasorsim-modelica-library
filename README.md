@@ -24,7 +24,7 @@ This Modelica Library is intended for ePHASORSIM external components modelizatio
 ePHASORSIM requires external components to conform to an interface for compatibility with the Solver. In general terms, each power pin (`OpalRT.NonElectrical.Connector.PwPin`) representing a bus must have its I/Os mapped as follows:
 * `busN_vr`: input voltage to the rectifier 
 * `busN_vi`: input voltage to the inverter
-* `busN_ii`: output current from the rectifier
+* `busN_ir`: output current from the rectifier
 * `busN_ii`: output current from the inverter
 
 The resulting `model_description.xml` shall translate to this:
@@ -134,7 +134,7 @@ build.sh [options] BUILD_DIR:
 
 2. Configure the environment
     ```bash
-   ./configure.sh
+   ./configure.sh --install-std-lib
    ```
 
 2. Build
