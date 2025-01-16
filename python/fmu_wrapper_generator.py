@@ -1,6 +1,7 @@
 import argparse
-from fmu_builder import FmuBuilder
+from ephasor_fmu_interface import FmuInterfaceBuilder
 from modelica_parser import ModelicaParser
+import json
 import os
 import pathlib
 
@@ -78,6 +79,30 @@ def build_modelica_path(path):
     return f'"{path}"'
 
 
+def generate_mos(dest_dir, components, check_only=False, no_exit_on_error=False):
+    mos_component_list = "{\n"
+    for component in components:
+        mos_component_list += f'    "{component}",\n'
+    mos_component_list = mos_component_list[:-2]
+    mos_component_list += "\n};"
+
+    with open(os.path.join(dest_dir, 'build.mos'), 'w') as mos_script:
+        mos_script.write(moscript_load_dependencies.format(**{
+            'exit_on_error': "false" if no_exit_on_error else "true",
+            'component_list': mos_component_list
+        }))
+
+        if check_only:
+            mos_script.write(moscript_format_load_model)
+        else:
+            mos_script.write(moscript_format_build)
+
+
+def save_component_list(dest_dir, components):
+    with open(os.path.join(dest_dir, 'components.json'), 'w') as components_json:
+        json.dump(components, components_json)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--no-build-fmu', action='store_true', help='skip build fmu section')
@@ -85,6 +110,7 @@ if __name__ == "__main__":
     parser.add_argument('--blacklist', type=str, help='coma separated component list', default="")
     parser.add_argument('--no-exit-on-error', action='store_true', help='output directory')
     parser.add_argument('--force', action='store_true', help='output directory')
+    parser.add_argument('--generate-mos', action='store_true', help='whether to generate a .mos to generate FMUs (openmodelica only)')
     parser.add_argument('build_dir', help='output directory')
 
     args = parser.parse_args()
@@ -117,26 +143,15 @@ if __name__ == "__main__":
             continue
 
         genunit_lines = ModelicaParser.extract_class(component_file, component_name)
-        builder = FmuBuilder(genunit_lines)
+        builder = FmuInterfaceBuilder(genunit_lines)
 
         with open(os.path.join(args.build_dir, f'{component_name}.mo'), 'w') as component_mo:
             component_mo.writelines(builder.build())
 
         filtered_components.append(component_name)
 
-    mos_component_list = "{\n"
-    for component in filtered_components:
-        mos_component_list += f'    "{component}",\n'
-    mos_component_list = mos_component_list[:-2]
-    mos_component_list += "\n};"
+    # save filtered component list to be used at later stages
+    save_component_list(args.build_dir, filtered_components)
 
-    with open(os.path.join(args.build_dir, 'build.mos'), 'w') as mos_script:
-        mos_script.write(moscript_load_dependencies.format(**{
-            'exit_on_error': "false" if args.no_exit_on_error else "true",
-            'component_list': mos_component_list
-        }))
-
-        if args.no_build_fmu:
-            mos_script.write(moscript_format_load_model)
-        else:
-            mos_script.write(moscript_format_build)
+    if args.generate_mos:
+        generate_mos(args.build_dir, filtered_components, args.no_build_fmu, args.no_exit_on_error)

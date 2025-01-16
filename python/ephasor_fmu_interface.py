@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 import logging
 import re
 
-LOGGER = logging.getLogger("frontend.eph_fmu.fmu_builder")
+LOGGER = logging.getLogger("ephasor_fmu_interface")
+
 
 class Pin(object):
     def __init__(self, name):
@@ -16,6 +17,7 @@ class Pin(object):
 
     def get_equations(self):
         raise NotImplementedError("Subclass of Pin must implement get_equations")
+
 
 class PwPin(Pin):
     def __init__(self, name=None):
@@ -39,6 +41,7 @@ class PwPin(Pin):
             "connect({0}_PIN2INOUT.ii, {0}_ii);\n".format(self.name),
         ]
 
+
 class InterfacePin(Pin):
     def __init__(self, name=None):
         super(InterfacePin, self).__init__(name.strip(';'))
@@ -49,7 +52,8 @@ class InterfacePin(Pin):
     def get_equations(self):
         return ["connect(comp.{0}, {0});\n".format(self.name)]
 
-class FmuBuilder:
+
+class FmuInterfaceBuilder:
     def __init__(self, lines):
         self.lines = lines
         self.name = lines[0].strip().split()[1]
@@ -135,6 +139,7 @@ class FmuBuilder:
 
         return fmu_lines
 
+
 def main():
     logging.basicConfig(level=logging.DEBUG)
 
@@ -153,7 +158,7 @@ def main():
         'end SimpleLoad;\n'
     ]
 
-    builder = FmuBuilder(lines)
+    builder = FmuInterfaceBuilder(lines)
     fmu = builder.build()
 
     for line in fmu:

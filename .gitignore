@@ -1,2 +1,6 @@
+.vscode/
+all_blocks/
+dymola_test/
+dymola_build/
 build/
-fmuwrapper/__pycache__/
+python/__pycache__/

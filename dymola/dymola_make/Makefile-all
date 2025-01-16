@@ -1,0 +1,26 @@
+SUBDIRS := $(wildcard */)
+SUBDIRS := $(filter-out include/, $(SUBDIRS))
+
+HOSTARCH := $(shell uname -m | sed -e s/i.86/32/ -e s/x86_64/64/)
+ifeq ($(HOSTARCH),32)
+	PLATFORM = linux32
+else ifeq ($(HOSTARCH),64)
+	PLATFORM = linux64
+else
+	PLATFORM = unknown
+endif
+
+BUILD_DIR := ../$(PLATFORM)
+
+.PHONY: all create-build-dir clean $(SUBDIRS)
+
+all: create-build-dir $(SUBDIRS)
+
+create-build-dir:
+	mkdir -p $(BUILD_DIR)
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+$(SUBDIRS):
+	$(MAKE) -C $@ BUILD_DIR=$(BUILD_DIR) GENUNIT=$(firstword $(subst /, ,$@))

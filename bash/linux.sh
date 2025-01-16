@@ -1,10 +1,26 @@
 #!/bin/echo Usage: source linux.sh
 
 function build_local() {
+    modelica_compiler=$1
+    no_exit_on_error=$2  # ignored since this is handled in .mos script
+    need_sources=$3  # ignored since needed only for dymola
+
+    if [[ ${modelica_compiler} != "openmodelica" ]];
+    then
+        echo Modelica compiler ${modelica_compiler} not supported by this tool on this platform
+        exit 1
+    fi
+
     mkdir -p ./linux64
     pushd ./linux64 > /dev/null
     OPENMODELICALIBRARY="${LOCAL_MODELICA_PATH}:${LOCAL_MODELICA_PATH}/MSL4:../sources" ${LOCAL_OPEN_MODELICA_COMPILER} "../sources/build.mos"
     popd > /dev/null
+}
+
+function build_remote_dymola() {
+    echo '''This mode is not supported on Linux. To build FMUs using Dymola on linux, you use this script
+on a Windows machine which has Dymola installed and use the --target-root and --target-ip flags.'''
+    exit 1
 }
 
 function check_local_env() {

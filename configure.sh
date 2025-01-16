@@ -191,7 +191,7 @@ then
     echo "Packaging OpalRT modelica library"
     tar -acf "${SCRIPT_DIR}/OpalRT.tar.gz" OpalRT
     echo "Transfering files to remote target \"${TARGET_USER}@${TARGET_IP}\""
-    scp "${SCRIPT_DIR}/OpalRT.tar.gz" "${SCRIPT_DIR}/install_modelica.sh" ${TARGET_USER}@${TARGET_IP}:"${remote_temp_dir}/"
+    scp "${SCRIPT_DIR}/OpalRT.tar.gz" "${SCRIPT_DIR}/configure.sh" ${TARGET_USER}@${TARGET_IP}:"${remote_temp_dir}/"
 
     if [[ -f "${SCRIPT_DIR}/${MODELICA_STD_LIB_REMOTE_NAME}" ]];
     then
@@ -202,7 +202,8 @@ then
     pushd ${remote_temp_dir} > /dev/null
     echo Extracting OpalRT modelica library
     tar -xf OpalRT.tar.gz
-    bash -ic \"./install_modelica.sh --install-std-lib\"
+    dos2unix ./configure.sh
+    bash -ic \"./configure.sh --install-std-lib\"
     popd > /dev/null
     rm -rf "${remote_temp_dir}"
     """

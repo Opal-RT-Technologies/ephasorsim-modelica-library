@@ -43,7 +43,7 @@ function detect_python_int() {
     return 0
 }
 
-function check_remote_env() {
+function check_remote_env_om() {
     target_user=$1
     target_ip=$2
 
@@ -79,9 +79,25 @@ EOF
     )
 }
 
-function build_remote() {
-    target_user=$1
-    target_ip=$2
+function check_remote_env() {
+    modelica_compiler=$1
+
+    if [[ ${modelica_compiler} = "openmodelica" ]];
+    then
+        check_remote_env_om $2 $3
+    elif [[ ${modelica_compiler} = "dymola" ]];
+    then
+        : # noop : this is not available for Dymola
+    else
+        echo "Invalid modelica compiler"
+        exit
+    fi
+}
+
+function build_remote_om() {
+    no_exit_on_error=$1 # ignored since this is handled in .mos
+    target_user=$2
+    target_ip=$3
 
     ssh $target_user@$target_ip """
     mkdir -p /tmp/build_modelica_xxxx/build/sources
@@ -112,5 +128,20 @@ EOF
         ssh $target_user@$target_ip """
         rm -rf /tmp/build_modelica_xxxx
         """
+    fi
+}
+
+function build_remote() {
+    modelica_compiler=$1
+
+    if [[ ${modelica_compiler} = "openmodelica" ]];
+    then
+        build_remote_om $2 $3 $4
+    elif [[ ${modelica_compiler} = "dymola" ]];
+    then
+        build_remote_dymola $2 $3 $4
+    else
+        echo "Invalid modelica compiler"
+        exit
     fi
 }

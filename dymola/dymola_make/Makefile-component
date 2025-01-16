@@ -1,0 +1,21 @@
+
+CC = gcc
+CFLAGS = -O2 -I../include -I./sources -fpic -DDYN_MULTINSTANCE=0
+
+LDFLAGS = -lm -shared
+
+SRC = ./sources/all.c
+SRC +=
+
+OBJ = $(SRC:.c=.o)
+
+debug: CFLAGS += -g
+debug: dylib
+
+all: clean dylib
+
+dylib: $(OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o ../$(BUILD_DIR)/$(GENUNIT).so
+
+clean:
+	rm -f *.o

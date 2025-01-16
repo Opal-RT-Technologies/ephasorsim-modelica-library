@@ -66,7 +66,7 @@ The resulting `model_description.xml` shall translate to this:
   ...
 ```
 
-The `fmuwrapper` package provides a utility to convert an existing component to an external component compatible with ePHASORSIM.
+The `python/fmu_wrapper_generator.py` utility is useful convert an existing component to an external component compatible with ePHASORSIM.
 
 ## Utilities
 

@@ -9,7 +9,7 @@ trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 function usage() {
         cat <<EOM
-build.sh [options] BUILD_DIR:
+build.sh [options] BUILD_DIR MODELICA_COMPILER:
 
     Script to build FMUs from the OPAL-RT Modelica library.
 
@@ -22,6 +22,7 @@ build.sh [options] BUILD_DIR:
         C:/Users/${USERNAME}/.modelica/Modelica 4.0.0
         C:/Users/${USERNAME}/.modelica/OpalRT
     2. The Open Modelica Installation is detected based upon the OPENMODELICAHOME environment variable
+    3. The Dymola Installation is detected based upon the DYMOLAHOME environment variable
 
     On Linux:
     1. The following folder structure is expected:
@@ -29,8 +30,13 @@ build.sh [options] BUILD_DIR:
         /home/<TARGET-USER>/.modelica/Modelica 4.0.0
         /home/<TARGET-USER>/.modelica/OpalRT
     2. Open Modelica is expected to be found at /usr/openmodelica/OpenModelica/bin/omc (provisioned with OPAL-RT Linux)
+    3. To build FMUs using Dymola for Linux targets, run this script on Windows and use --target-user --target-ip flags
 
     TIP: use \`ssh-copy-id -i path/to/key.pub username@remoteHost\` to avoid password prompting
+
+    positional arguments:
+        BUILD_DIR               The destination directory where FMUs will be saved
+        MODELICA_COMPILER       The Modelica compiler to use (dymola, openmodelica)
 
     options:
         --help                  Print usage
@@ -116,6 +122,7 @@ set -e;
 
 MODELICA_VERSION=${MODELICA_VERSION:-4.0.0}
 BUILD_DIR=${@:$OPTIND:1}
+MODELICA_COMPILER=${@:$OPTIND+1:1}
 VALIDATE_MODELS=${VALIDATE_MODELS:-false}
 INCREMENTAL=${INCREMENTAL:-false}
 NO_EXIT_ON_ERROR=${NO_EXIT_ON_ERROR:-false}
@@ -124,6 +131,7 @@ CLEAN_BUILD=${CLEAN_BUILD:-false}
 COMPILE_MODE_LOCAL=1
 COMPILE_MODE_REMOTE=2
 COMPILE_MODE=${COMPILE_MODE_LOCAL}
+NEED_SOURCES=false
 
 if [[ -n $TARGET_IP ]] || [[ -n $TARGET_USER ]];
 then
@@ -159,15 +167,21 @@ then
     echo "ERROR: BUILD_DIR is required"
     exit 1
 fi
+
+if [[ -z $MODELICA_COMPILER ]];
+then
+    echo "ERROR: MODELICA_COMPILER is required"
+    exit 1
+fi
  
 if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
 then
-    check_remote_env $TARGET_USER $TARGET_IP
+    check_remote_env ${MODELICA_COMPILER} $TARGET_USER $TARGET_IP
 fi
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_LOCAL)) -ne 0 ]];
 then
-    check_local_env
+    check_local_env ${MODELICA_COMPILER}
 fi
 
 
@@ -192,6 +206,12 @@ then
     ARGS="${ARGS} --whitelist ${WHITELIST_STR}"
 fi
 
+if [[ ${MODELICA_COMPILER} = "openmodelica" ]];
+then
+    # .mos doesn't work with Dymola 2019
+    ARGS="${ARGS} --generate-mos"
+fi
+
 mkdir -p ${BUILD_DIR}
 pushd ${BUILD_DIR} > /dev/null
 if [[ ${CLEAN_BUILD} = true ]];
@@ -200,17 +220,27 @@ then
 fi
 
 echo [$0] Generating mos build script ...
-(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/fmuwrapper/main.py ./sources ${ARGS})
-
-
-if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
-then
-    build_remote "${TARGET_USER}" "${TARGET_IP}"
-    echo
-fi
+(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/python/fmu_wrapper_generator.py ./sources ${ARGS})
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_LOCAL)) -ne 0 ]];
 then
-    build_local
+    if [[ ${MODELICA_COMPILER} = "dymola" ]] && [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
+    then
+        # For Dymola, we need to generate sources to compile for Linux targets
+        # sources are not needed for Windows.
+        #
+        # Note: exporting sources requires the SourceCodeGeneration license feature
+        #       when the user doesn't have the required license feature for sources generation
+        #       it is still possible to generate FMUs for Windows
+        NEED_SOURCES=true
+    fi
+
+    build_local ${MODELICA_COMPILER} ${NO_EXIT_ON_ERROR} ${NEED_SOURCES}
+    echo
+fi
+
+if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
+then
+    build_remote ${MODELICA_COMPILER} ${NO_EXIT_ON_ERROR} "${TARGET_USER}" "${TARGET_IP}"
     echo
 fi
