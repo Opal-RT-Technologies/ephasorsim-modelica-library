@@ -7,6 +7,9 @@ import zip
 
 import dymola_interface
 
+def model_short_name(model):
+    return model.split(".")[-1]
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('build_dir', help='output directory')
@@ -49,7 +52,7 @@ if __name__ == "__main__":
             if component in failed_components:
                 continue
 
-            zip.filter_zip(os.path.join(args.build_dir, f'{component}.fmu'), "sources", original_prefix="src", dest=args.sources_dest)
+            zip.filter_zip(os.path.join(args.build_dir, f'{model_short_name(component)}.fmu'), "sources", original_prefix="src", dest=args.sources_dest)
 
         all_components_sources = os.path.join(args.sources_dest, 'src-components')
         if os.path.exists(all_components_sources):
@@ -63,7 +66,7 @@ if __name__ == "__main__":
             if component in failed_components:
                 continue
 
-            zip.extract_zip(os.path.join(args.sources_dest, f'src-{component}.fmu'), os.path.join(all_components_sources, component))
-            shutil.rmtree(os.path.join(all_components_sources, component, 'binaries'))
+            zip.extract_zip(os.path.join(args.sources_dest, f'src-{model_short_name(component)}.fmu'), os.path.join(all_components_sources, model_short_name(component)))
+            shutil.rmtree(os.path.join(all_components_sources, model_short_name(component), 'binaries'))
 
-            shutil.copyfile(os.path.join(dymola_build_files, 'Makefile-component'), os.path.join(all_components_sources, component, 'Makefile'))
+            shutil.copyfile(os.path.join(dymola_build_files, 'Makefile-component'), os.path.join(all_components_sources, model_short_name(component), 'Makefile'))

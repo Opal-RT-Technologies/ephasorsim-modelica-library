@@ -220,7 +220,7 @@ then
 fi
 
 echo [$0] Generating mos build script ...
-(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/python/fmu_wrapper_generator.py ./sources ${ARGS})
+(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/python/build_mos_generator.py ./sources ${ARGS})
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_LOCAL)) -ne 0 ]];
 then

@@ -7,7 +7,7 @@ function build_local() {
 
     mkdir -p ./win32
     pushd ./win32 > /dev/null
-    COMMON_MODELICA_PATH="${LOCAL_MODELICA_PATH};$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ../sources))"
+    COMMON_MODELICA_PATH="${LOCAL_MODELICA_PATH};$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/OpalRT));"
     if [[ ${modelica_compiler} = "openmodelica" ]];
     then
         OPENMODELICALIBRARY="${COMMON_MODELICA_PATH}" "${LOCAL_OPEN_MODELICA_COMPILER}" "../sources/build.mos"
