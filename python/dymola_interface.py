@@ -67,6 +67,13 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
             raise DymolaException("Failed to setup compiler")
 
         for model in models:
+            fmu_model_name = model_short_name(model)
+            fmu_file_name = f"{fmu_model_name}.fmu"
+            final_fmu_path = os.path.abspath(os.path.join(build_dir, fmu_file_name))
+            if os.path.exists(final_fmu_path):
+                LOGGER.info(f"Already built {fmu_model_name}.fmu. Skipping...")
+                continue
+
             dymola.system(f"mkdir {model}")
             dymola.cd(model)
 
@@ -77,9 +84,6 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
                     LOGGER.debug("raising a dymola exception!")
                     raise DymolaException("Failed to verify model " + model)
 
-                fmu_model_name = model_short_name(model)
-                fmu_file_name = f"{fmu_model_name}.fmu"
-
                 # Call dymola to produce the fmu
                 LOGGER.info(f"Building {fmu_model_name}.fmu")
                 res = dymola.translateModelFMU(modelToOpen=model, storeResult=False, modelName=fmu_model_name, fmiVersion=fmi_ver, fmiType="me", includeSource=keep_sources)
@@ -89,7 +93,7 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
                     raise DymolaException("Failed to generate FMU for " + model)
 
                 res = dymola.system(f"move {fmu_model_name}.fmu ..\\{fmu_file_name}")
-                final_fmu_path = os.path.abspath(os.path.join(build_dir, fmu_file_name))
+
                 if not res or not os.path.exists(final_fmu_path):
                     raise DymolaException(f"Failed to relocate {fmu_file_name}")
 
