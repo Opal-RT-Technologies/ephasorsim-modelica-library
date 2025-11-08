@@ -53,11 +53,11 @@ function build_remote_dymola() {
         exit 1
     fi
 
-    echo [$0] Sending building components on remote target ...
+    echo [$0] Building components on remote target ...
     ssh $target_user@$target_ip bash -s << 'EOF'
     pushd /tmp/build_dymola_xxxx/build/sources > /dev/null
     tar -xf src-components.tar.gz
-    make
+    make -j $(($(nproc) - 1))
 EOF
 
     if [[ $? -eq 0 ]]; 
