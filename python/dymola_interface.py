@@ -66,12 +66,14 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
         if not dymola.verifyCompiler():
             raise DymolaException("Failed to setup compiler")
 
+        counter = 0
         for model in models:
+            counter += 1
             fmu_model_name = model_short_name(model)
             fmu_file_name = f"{fmu_model_name}.fmu"
             final_fmu_path = os.path.abspath(os.path.join(build_dir, fmu_file_name))
             if os.path.exists(final_fmu_path):
-                LOGGER.info(f"Already built {fmu_model_name}.fmu. Skipping...")
+                LOGGER.info(f"[{counter}/{len(models)}] Already built {fmu_model_name}.fmu. Skipping...")
                 continue
 
             dymola.system(f"mkdir {model}")
@@ -85,7 +87,7 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
                     raise DymolaException("Failed to verify model " + model)
 
                 # Call dymola to produce the fmu
-                LOGGER.info(f"Building {fmu_model_name}.fmu")
+                LOGGER.info(f"[{counter}/{len(models)}] Building {fmu_model_name}.fmu")
                 res = dymola.translateModelFMU(modelToOpen=model, storeResult=False, modelName=fmu_model_name, fmiVersion=fmi_ver, fmiType="me", includeSource=keep_sources)
 
                 fmu_path = os.path.abspath(os.path.join(build_dir, model, fmu_file_name))
@@ -97,7 +99,7 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
                 if not res or not os.path.exists(final_fmu_path):
                     raise DymolaException(f"Failed to relocate {fmu_file_name}")
 
-                LOGGER.info(f"Successfully generated {final_fmu_path} ")
+                LOGGER.info(f"[{counter}/{len(models)}] Successfully generated {final_fmu_path} ")
             except DymolaException as e:
                 handle_dymola_exception(dymola, e, model)
                 if not no_exit_on_error:

@@ -7,6 +7,8 @@ import zip
 
 import dymola_interface
 
+LOGGER = logging.getLogger("DYMOLA")
+
 def model_short_name(model):
     return model.split(".")[-1]
 
@@ -48,10 +50,12 @@ if __name__ == "__main__":
     dymola_build_files = os.path.join(os.path.dirname(__file__), '..', 'dymola', 'dymola_make')
 
     if keep_sources:
+        counter = 0
         for component in components:
+            counter += 1
             if component in failed_components:
                 continue
-
+            LOGGER.info(f"[{counter}/{len(components)}] Extracting sources for {model_short_name(component)}")
             zip.filter_zip(os.path.join(args.build_dir, f'{model_short_name(component)}.fmu'), "sources", original_prefix="src", dest=args.sources_dest)
 
         all_components_sources = os.path.join(args.sources_dest, 'src-components')
@@ -62,10 +66,13 @@ if __name__ == "__main__":
         shutil.copyfile(os.path.join(dymola_build_files, 'Makefile-all'), os.path.join(all_components_sources, 'Makefile'))
         shutil.copytree(os.path.join(dymola_build_files, 'include'), os.path.join(all_components_sources, 'include'))
 
+        counter = 0
         for component in components:
+            counter += 1
             if component in failed_components:
                 continue
 
+            LOGGER.info(f"[{counter}/{len(components)}] Preparing build files for {model_short_name(component)}")
             zip.extract_zip(os.path.join(args.sources_dest, f'src-{model_short_name(component)}.fmu'), os.path.join(all_components_sources, model_short_name(component)))
             shutil.rmtree(os.path.join(all_components_sources, model_short_name(component), 'binaries'))
 
