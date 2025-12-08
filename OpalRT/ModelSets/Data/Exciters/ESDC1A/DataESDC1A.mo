@@ -1,0 +1,20 @@
+within OpalRT.ModelSets.Data.Exciters.ESDC1A;
+partial record DataESDC1A
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real VRMAX_ex "or zero" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real KE_ex "or zero" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real TE_ex "(sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real TF1_ex "(>0) (sec)" annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real Switch_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "ESDC1A parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "ESDC1A parameters"));
+end DataESDC1A;

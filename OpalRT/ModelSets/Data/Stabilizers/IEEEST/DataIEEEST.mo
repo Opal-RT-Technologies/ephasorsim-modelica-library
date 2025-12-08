@@ -1,0 +1,23 @@
+within OpalRT.ModelSets.Data.Stabilizers.IEEEST;
+partial record DataIEEEST
+  extends OpalRT.ModelSets.Data.Stabilizers.StabilizerData;
+  parameter Real A1 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real A2 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real A3 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real A4 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real A5 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real A6 annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T1 "sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T2 "sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T3 "sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T4 "sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T5 "sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real T6 ">0 sec" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real KS annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real LSMAX annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real LSMIN annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real VCU "(pu) (if equal zero, ignored)" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real VCL "(pu) (if equal zero, ignored)" annotation(Dialog(tab = "IEEEST Parameters"));
+  parameter Real M0 "Stabilizer input code" annotation(Dialog(tab = "IEEEST Parameters", group = "ICONs"));
+  parameter Real M1 "IB, remote bus number" annotation(Dialog(tab = "IEEEST Parameters", group = "ICONs"));
+end DataIEEEST;

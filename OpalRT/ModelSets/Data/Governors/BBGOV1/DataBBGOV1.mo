@@ -1,0 +1,21 @@
+within OpalRT.ModelSets.Data.Governors.BBGOV1;
+partial record DataBBGOV1
+  extends OpalRT.ModelSets.Data.Governors.GovernorData;
+  parameter Real fcut_tg "(>=0)(pu)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real KS_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real KLS_tg "(> 0)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real KG_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real KP_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real TN_tg "(sec)(> 0)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real KD_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real TD_tg "(sec)(> 0)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real T4_tg "(sec)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real K2_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real T5_tg "(sec)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real K3_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real T6_tg "(sec)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real T1_tg "(sec)" annotation(Dialog(tab = "BBGOV1"));
+  parameter Real SWITCH_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real PMAX_tg annotation(Dialog(tab = "BBGOV1"));
+  parameter Real PMIN_tg annotation(Dialog(tab = "BBGOV1"));
+end DataBBGOV1;

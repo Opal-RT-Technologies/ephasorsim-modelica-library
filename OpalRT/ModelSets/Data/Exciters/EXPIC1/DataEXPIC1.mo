@@ -1,0 +1,28 @@
+within OpalRT.ModelSets.Data.Exciters.EXPIC1;
+partial record DataEXPIC1
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TA1_ex "(sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real VR1_ex "or zero" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real VR2_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TA2_ex "(sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TA3_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TA4_ex "(sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real VRMAX_ex "or zero" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TF1_ex "(>0) (sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TF2_ex "(>0) (sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real EFDMAX_ex "or zero" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real EFDMIN_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KE_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real TE_ex "(sec)" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KP_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KI_ex "or zero" annotation(Dialog(tab = "EXPIC1 Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "EXPIC1 Parameters"));
+end DataEXPIC1;

@@ -1,0 +1,22 @@
+within OpalRT.ModelSets.Data.Exciters.ST5B;
+partial record DataST5B
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "regulator input filter time constant (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TC1_ex "lead time constant of first lead-lag block (voltage regulator channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TB1_ex "lag time constant of first lead-lag block (voltage regulator channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TC2_ex "lead time constant of second lead-lag block (voltage regulator channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TB2_ex "lag time constant of second lead-lag block (voltage regulator channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real KR_ex "(>0) (pu) voltage regulator gain" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real VRMAX_ex "(pu) voltage regulator maximum limit" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real VRMIN_ex "(pu) voltage regulator minimum limit" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real T1_ex "voltage regulator time constant (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real KC_ex "(pu)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TUC1_ex "lead time constant of first lead-lag block (under excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TUB1_ex "lag time constant of first lead-lag block (under-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TUC2_ex "lead time constant of second lead-lag block (under-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TUB2_ex "lag time constant of second lead-lag block (under-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TOC1_ex "lead time constant of first lead-lag block (over-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TOB1_ex "lag time constant of first lead-lag block (over-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TOC2_ex "lead time constant of second lead-lag block (over-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+  parameter Real TOB2_ex "lag time constant of second lead-lag block (over-excitation channel) (sec)" annotation(Dialog(tab = "ST5B Parameters"));
+end DataST5B;

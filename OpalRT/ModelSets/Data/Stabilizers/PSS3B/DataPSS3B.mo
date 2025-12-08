@@ -1,0 +1,25 @@
+within OpalRT.ModelSets.Data.Stabilizers.PSS3B;
+partial record DataPSS3B
+  extends OpalRT.ModelSets.Data.Stabilizers.StabilizerData;
+  parameter Real KS1 "(pu) (?0), input channel #1 gain" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real T1 "input channel #1 transducer time constant (sec)" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real TW1 "input channel #1 washout time constant (sec)" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real KS2 "(pu) (?0), input channel #2 gain" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real T2 "input channel #2 transducer time constant (sec)" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real TW2 "input channel #2 washout time constant (sec)" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real TW3 "(0), main washout time constant (sec)" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A1 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A2 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A3 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A4 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A5 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A6 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A7 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real A8 annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real VSTMAX "(pu), stabilizer output maximum limit" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real VSTMIN "(pu), stabilizer output minimum limit" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real M0 "code for first channel stabilizer input variable" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real M1 "currently disabled" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real M2 "code for first channel stabilizer input variable" annotation(Dialog(tab = "PSS3B Parameters"));
+  parameter Real M3 "currently disabled" annotation(Dialog(tab = "PSS3B Parameters"));
+end DataPSS3B;

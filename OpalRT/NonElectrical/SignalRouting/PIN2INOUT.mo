@@ -1,5 +1,5 @@
 within OpalRT.NonElectrical.SignalRouting;
-block PIN2INOUT "Convert PIN signal to: Voltages as Inputs and Current as Output. this block can be used as an interface with FMU, since FMU accepts voltage as its input and generates current as its output."
+model PIN2INOUT "Convert PIN signal to: Voltages as Inputs and Current as Output. this block can be used as an interface with FMU, since FMU accepts voltage as its input and generates current as its output."
   OpalRT.NonElectrical.Connector.PwPin p annotation(Placement(visible = true, transformation(origin = {-60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput ii annotation(Placement(visible = true, transformation(origin = {-20, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput ir annotation(Placement(visible = true, transformation(origin = {-20, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

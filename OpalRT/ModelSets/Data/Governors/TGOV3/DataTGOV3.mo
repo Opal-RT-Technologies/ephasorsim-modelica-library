@@ -1,0 +1,22 @@
+within OpalRT.ModelSets.Data.Governors.TGOV3;
+partial record DataTGOV3
+  extends OpalRT.ModelSets.Data.Governors.GovernorData;
+  parameter Real K_tg annotation(Dialog(tab = "TGOV3"));
+  parameter Real T1_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real T2_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real T3_tg "(>0)(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real Uo_tg "(pu/sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real Uc_tg "(<0)(pu/sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real PMAX_tg "(pu on machine MVA rating)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real PMIN_tg "(pu on machine MVA rating)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real T4_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real K1_tg annotation(Dialog(tab = "TGOV3"));
+  parameter Real T5_tg "(>0)(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real K2_tg annotation(Dialog(tab = "TGOV3"));
+  parameter Real T6_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real K3_tg annotation(Dialog(tab = "TGOV3"));
+  parameter Real TA_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real TB_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real TC_tg "(sec)" annotation(Dialog(tab = "TGOV3"));
+  parameter Real PRMAX_tg "(pu)" annotation(Dialog(tab = "TGOV3"));
+end DataTGOV3;

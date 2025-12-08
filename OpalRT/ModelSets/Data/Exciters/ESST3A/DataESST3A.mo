@@ -1,0 +1,25 @@
+within OpalRT.ModelSets.Data.Exciters.ESST3A;
+partial record DataESST3A
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec) regulator input filter time constant" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VIMAX_ex "(pu) Voltage regulator input maximum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VIMIN_ex "(pu) Voltage regulator input minimum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KM_ex "Forward gain constant of the inner loop field regulator" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real TC_ex " lead time constant of voltage regulator (s)" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real TB_ex " lag time constant of voltage regulator (s)" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KA_ex "(pu) voltage regulator gain" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real TA_ex "(sec) regulator time constant" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VRMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VRMIN_ex "(pu) regulator output minimum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KG_ex "Feedback gain constant of the inner loop field regulator" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KP_ex "Potential circuit gain coefficient" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KI_ex "Potential circuit gain coefficient" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VBMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real KC_ex "Rectifier loading factor proportional to commutating reactance" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real XL_ex "Reactance associated with potential source" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VGMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real THETAP_ex "Potential circuit phase angle (degrees)" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real TM_ex "Forward time constant of the inner loop field regulator" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VMMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+  parameter Real VMMIN_ex "(pu) regulator output minimum limit" annotation(Dialog(tab = "ESST3A Parameters"));
+end DataESST3A;

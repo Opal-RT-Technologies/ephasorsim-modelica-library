@@ -1,0 +1,14 @@
+FMUTemplateCommon
+FMUTemplateInjection
+FMUTemplateInjectionPRef
+FMUTemplateInjectionTrip
+FMUTemplateInjectionStatus
+FMUTemplateInjectionVOTHSG
+FMUTemplateInjectionVOTHSGVRef
+FMUTemplateVRef
+FMUTemplateGRef
+FMUTemplateGRefTrip
+FMUTemplateVRefGRef
+FMUTemplateVRefGRefTrip
+FMUTemplateTwoPowerPin
+FMUTemplateTwoPowerPinControl

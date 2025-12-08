@@ -1,0 +1,24 @@
+within OpalRT.ModelSets.Data.Exciters.ESST1A;
+partial record DataESST1A
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VIMAX_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VIMIN_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TC1_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TB1_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VAMAX_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VAMIN_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VRMAX_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real TF_ex "> 0 (sec)" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real KLR_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real ILR_ex annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real UEL_ex "1,2 or 3" annotation(Dialog(tab = "ESST1A Parameters"));
+  parameter Real VOS_ex "1 or 2" annotation(Dialog(tab = "ESST1A Parameters"));
+end DataESST1A;

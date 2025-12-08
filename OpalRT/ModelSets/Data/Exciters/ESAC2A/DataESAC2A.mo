@@ -1,0 +1,26 @@
+within OpalRT.ModelSets.Data.Exciters.ESAC2A;
+partial record DataESAC2A
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "regulator input filter time constant (sec)" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real TB_ex " lag time constant of voltage regulator (s)" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real TC_ex " lead time constant of voltage regulator (s)" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KA_ex "(pu) voltage regulator gain" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real TA_ex "(sec) regulator time constant" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real VAMAX_ex "Maximum voltage regulator output" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real VAMIN_ex "Minimum voltage regulator output" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KB_ex "Second stage regulator gain" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real VRMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real VRMIN_ex "(pu) regulator output minimum limit" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real TE_ex "Exciter time constant" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real VFEMAX_ex "exciter field current limit (> 0)" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KH_ex "Exciter field current feedback gain" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KF_ex "Excitation control system stabilizer gains" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real TF_ex "Excitation control system stabilizer time constant, sec" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KC_ex "Rectifier loading factor proportional to commutating reactance" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KD_ex "Demagnetizing factor" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real KE_ex "exciter constant related fo self-excited field" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real E1_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real SE_E1_ex "Exciter saturation function value at E1" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real E2_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "ESAC2A Parameters"));
+  parameter Real SE_E2_ex "Exciter saturation function value at E2" annotation(Dialog(tab = "ESAC2A Parameters"));
+end DataESAC2A;

@@ -1,0 +1,26 @@
+within OpalRT.ModelSets.Data.Exciters.EXAC3;
+partial record DataEXAC3
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "regulator input filter time constant (sec)" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real TB_ex " lag time constant of voltage regulator (s)" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real TC_ex " lead time constant of voltage regulator (s)" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KA_ex "(pu) voltage regulator gain" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real TA_ex "(sec) regulator time constant" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real VAMAX_ex "(pu) regulator output maximum limit" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real VAMIN_ex "(pu) regulator output minimum limit" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real TE_ex "Exciter time constant" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KLV_ex "Gain used in the minimum field voltage limiter loop" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KR_ex "Constant associated with regulator and alternator field" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KF_ex "Excitation control system stabilizer gains" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real TF_ex "Excitation control system stabilizer time constant, sec" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KN_ex "Excitation control system stabilizer gain" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real EFDN_ex "Value of EFD at which feedback gain changes" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KC_ex "Rectifier loading factor proportional to commutating reactance" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KD_ex "Demagnetizing factor" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real KE_ex "exciter constant related fo self-excited field" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real VLV_ex "Field voltage used in the minimum field voltage limiter loop" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real E1_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real SE_E1_ex "Exciter saturation function value at E1" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real E2_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "EXAC3 Parameters"));
+  parameter Real SE_E2_ex "Exciter saturation function value at E2" annotation(Dialog(tab = "EXAC3 Parameters"));
+end DataEXAC3;

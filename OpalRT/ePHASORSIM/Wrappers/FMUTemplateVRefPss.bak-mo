@@ -1,0 +1,5 @@
+within OpalRT.ePHASORSIM.Wrappers;
+partial block FMUTemplateVRefPss
+  extends FMUTemplateVRef;
+    annotation (Placement(transformation(extent={{-34,-94},{-26,-86}})));
+end FMUTemplateVRefPss;

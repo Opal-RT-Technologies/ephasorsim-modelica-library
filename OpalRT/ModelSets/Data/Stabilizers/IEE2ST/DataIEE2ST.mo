@@ -1,0 +1,24 @@
+within OpalRT.ModelSets.Data.Stabilizers.IEE2ST;
+partial record DataIEE2ST
+  extends OpalRT.ModelSets.Data.Stabilizers.StabilizerData;
+  parameter Real K1 annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real K2 annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T1 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T2 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T3 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T4 ">0 sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T5 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T6 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T7 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T8 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T9 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real T10 "sec" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real LSMAX annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real LSMIN annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real VCU "(pu)(if equal zero, ignored.)" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real VCL "(pu)(if equal zero, ignored.)" annotation(Dialog(tab = "IEE2ST Parameters"));
+  parameter Real M0 "ICS1, first stabilizer input code" annotation(Dialog(tab = "IEE2ST Parameters", group = "ICONs"));
+  parameter Real M1 "IB1, first remote bus number. CURRENLY DISABLED" annotation(Dialog(tab = "IEE2ST Parameters", group = "ICONs"));
+  parameter Real M2 "ICS2, second stabilizer input code" annotation(Dialog(tab = "IEE2ST Parameters", group = "ICONs"));
+  parameter Real M3 "B2, second remote bus number CURRENLY DISABLED" annotation(Dialog(tab = "IEE2ST Parameters", group = "ICONs"));
+end DataIEE2ST;
