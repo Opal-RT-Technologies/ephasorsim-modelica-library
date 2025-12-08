@@ -1,0 +1,27 @@
+within OpalRT.ModelSets.Data.Exciters.EXAC2;
+partial record DataEXAC2
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real VAMAX_ex "or zero" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real VAMIN_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KB_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real VRMAX_ex "or zero" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real TE_ex "(sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KL_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KH_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real TF_ex "(>0) (sec)" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KD_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real KE_ex "or zero" annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real VLR_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "EXAC2 Parameters"));
+end DataEXAC2;

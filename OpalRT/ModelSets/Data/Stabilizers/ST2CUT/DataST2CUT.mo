@@ -1,0 +1,24 @@
+within OpalRT.ModelSets.Data.Stabilizers.ST2CUT;
+partial record DataST2CUT
+  extends OpalRT.ModelSets.Data.Stabilizers.StabilizerData;
+  parameter Real K1 annotation(Dialog(tab = "ST2CUT"));
+  parameter Real K2 annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T1 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T2 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T3 "T3>0 sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T4 "T4>0 sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T5 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T6 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T7 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T8 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T9 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real T10 "sec" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real LSMAX annotation(Dialog(tab = "ST2CUT"));
+  parameter Real LSMIN annotation(Dialog(tab = "ST2CUT"));
+  parameter Real VCU "VCU (pu) (if equal zero, ignored)" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real VCL "VCL (pu) (if equal zero, ignored)" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real M0 "ICS1, first stabilizer input code" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real M1 "IB1, first remote bus number. CURRENLY DISABLED" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real M2 "ICS2, second stabilizer input code" annotation(Dialog(tab = "ST2CUT"));
+  parameter Real M3 "B2, second remote bus number CURRENLY DISABLED" annotation(Dialog(tab = "ST2CUT"));
+end DataST2CUT;

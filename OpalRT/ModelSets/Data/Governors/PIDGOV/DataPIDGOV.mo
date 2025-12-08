@@ -1,0 +1,25 @@
+within OpalRT.ModelSets.Data.Governors.PIDGOV;
+partial record DataPIDGOV
+  extends OpalRT.ModelSets.Data.Governors.GovernorData;
+  parameter Real Rperm_tg "Permanent droop, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Treg_tg "Speed detector time constant, sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Kp_tg "Proportional gain, pu/sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Ki_tg "Reset gain, pu/sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Kd_tg "Derivative gain, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Ta_tg "Controller time constant, sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Tb_tg "Gate servo time constant, sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Dturb_tg "Turbine damping factor, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real G0_tg "Gate opening at speed no load, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real G1_tg "Intermediate gate opening, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real P1_tg "Power at gate opening G1, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real G2_tg "Intermediate gate opening, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real P2_tg "Power at gate opening G2, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real P3_tg "Power at full opened gate, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Gmax_tg "Maximum gate opening, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Gmin_tg "Minimum gate opening, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Atw_tg "Factor multiplying Tw, pu" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Tw_tg "Water inertia time constant, sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Velmax_tg "Maximum gate opening velocity, pu/sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real Velmin_tg "Minimum gate closing velocity, pu/sec" annotation(Dialog(tab = "PIDGOV Parameters"));
+  parameter Real M_tg "Feedback signal flag. 0: Electrical power feedback, 1: Gate position" annotation(Dialog(tab = "PIDGOV Parameters"));
+end DataPIDGOV;

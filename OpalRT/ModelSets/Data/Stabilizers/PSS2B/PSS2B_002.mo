@@ -1,0 +1,33 @@
+within OpalRT.ModelSets.Data.Stabilizers.PSS2B;
+record PSS2B_002
+  extends DataPSS2B(
+    M2 = 1,
+    TW1 = 10,
+    TW2 = 10,
+    T6 = 0,
+    TW3 = 10,
+    TW4 = 0,
+    T7 = 10,
+    KS2 = 1.13,
+    KS3 = 1,
+    T8 = 0.3,
+    T9 = 0.15,
+    KS1 = 20,
+    T1 = 0.16,
+    T2 = 0.02,
+    T3 = 0.16,
+    T4 = 0.02,
+    VSTMAX = 0.2,
+    VSTMIN = -0.066,
+    M0 = 1,
+    M1 = 0,
+    M3 = 0,
+    M4 = 5,
+    M5 = 1,
+    T10 = 0.3,
+    T11 = 0.15,
+    VS1MAX = 0.1,
+    VS1MIN = -0.1,
+    VS2MAX = 0.1,
+    VS2MIN = -0.1);
+end PSS2B_002;

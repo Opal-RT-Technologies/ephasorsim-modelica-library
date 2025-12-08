@@ -1,0 +1,21 @@
+within OpalRT.ModelSets.Data.Exciters.ST6B;
+partial record DataST6B
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KPA_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KIA_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KDA_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real TDA_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real VAMAX_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real VAMIN_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KFF_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KM_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KCI_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KLR_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real ILR_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real VRMAX_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real KG_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real TG_ex annotation(Dialog(tab = "ST6B Parameters"));
+  parameter Real OEL_ex annotation(Dialog(tab = "ST6B Parameters"));
+end DataST6B;

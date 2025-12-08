@@ -1,5 +1,5 @@
 within OpalRT.Electrical.Branch.HVDC.HVDC_LCC.Auxiliary;
-block BridgeLineSimulationLogic
+model BridgeLineSimulationLogic
   parameter Real RDC = 1 "The DC line resistance in ohms";
   parameter Real DELTI = 0.25 "Margin entred in per unit of desired power or current";
   parameter Real NBR = 1 "Number of bridges in series";

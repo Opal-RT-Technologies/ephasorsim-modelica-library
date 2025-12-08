@@ -1,0 +1,21 @@
+within OpalRT.ModelSets.Data.Exciters.ESST4B;
+partial record DataESST4B
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KPR_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KIR_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real VRMAX_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real TA_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KPM_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KIM_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real VMMAX_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real VMMIN_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KG_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KP_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KI_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real VBMAX_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real XL_ex annotation(Dialog(tab = "ESST4B Parameters"));
+  parameter Real THETAP_ex annotation(Dialog(tab = "ESST4B Parameters"));
+end DataESST4B;

@@ -1,0 +1,7 @@
+within OpalRT.ePHASORSIM.Wrappers;
+partial block FMUTemplateVRefGRefPss
+  extends FMUTemplateVRefGRef;
+  replaceable ModelSets.Data.Stabilizers.StabilizerData stabilizerData
+    constrainedby ModelSets.Data.Stabilizers.StabilizerData
+    annotation (Placement(transformation(extent={{-34,-94},{-26,-86}})), Dialog(tab="Data Records", group="Power System Stabilizer"));
+end FMUTemplateVRefGRefPss;

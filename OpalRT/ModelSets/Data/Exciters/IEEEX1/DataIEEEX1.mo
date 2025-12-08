@@ -1,0 +1,20 @@
+within OpalRT.ModelSets.Data.Exciters.IEEEX1;
+partial record DataIEEEX1
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real VRMAX_ex "or zero" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real KE_ex "or zero" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real TE_ex "(>0) (sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real TF1_ex "(>0) (sec)" annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real Switch_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "IEEEX1 Parameters"));
+end DataIEEEX1;

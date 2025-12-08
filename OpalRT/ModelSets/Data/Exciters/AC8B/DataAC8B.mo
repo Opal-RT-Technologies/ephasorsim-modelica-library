@@ -1,0 +1,25 @@
+within OpalRT.ModelSets.Data.Exciters.AC8B;
+partial record DataAC8B
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "regulator input filter time constant (sec)" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KPR_ex "(pu) (> 0) voltage regulator proportional gain" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KIR_ex "(pu) voltage regulator integral gain" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KDR_ex "(pu) voltage regulator derivative gain" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real TDR_ex "voltage regulator derivative channel time constant (sec)" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VPIDMAX_ex "PID maximum limit" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VPIDMIN_ex "PID minimum limit" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KA_ex "(pu) voltage regulator gain" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real TA_ex "(sec) regulator time constant" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VRMAX_ex "(pu) Voltage regulator output maximum limit" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VRMIN_ex "(pu) Voltage regulator output minimum limit" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KC_ex "rectifier loading factor proportional to commutating reactance" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KD_ex "demagnetizing factor, function of AC exciter reactances" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real KE_ex "exciter constant related fo self-excited field" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real TE_ex "exciter time constant (>0)" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VFEMAX_ex "exciter field current limit (> 0)" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real VEMIN_ex "Minimum exciter voltage output" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real E1_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real SE_E1_ex "Exciter saturation function value at E1" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real E2_ex "Exciter voltages at which exciter saturation is defined" annotation(Dialog(tab = "AC8B Parameters"));
+  parameter Real SE_E2_ex "Exciter saturation function value at E2" annotation(Dialog(tab = "AC8B Parameters"));
+end DataAC8B;

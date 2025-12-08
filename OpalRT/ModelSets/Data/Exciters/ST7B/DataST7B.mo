@@ -1,0 +1,20 @@
+within OpalRT.ModelSets.Data.Exciters.ST7B;
+partial record DataST7B
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex " regulator input filter time constant (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real TG_ex " lead time constant of voltage input (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real TF_ex " lag time constant of voltage input (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real VMAX_ex " voltage reference maximum limit (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real VMIN_ex " voltage reference minimum limit (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real KPA_ex "(>0) voltage regulator gain (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real VRMAX_ex " voltage regulator maximum limit (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real VRMIN_ex " voltage regulator minimum limit (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real KH_ex " feedback gain (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real KL_ex " feedback gain (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real TC_ex " lead time constant of voltage regulator (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real TB_ex " lag time constant of voltage regulator (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real KIA_ex "(>0) gain of the first order feedback block (p.u.)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real TIA_ex "(>0) time constant of the first order feedback block (s)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real OEL_ex "Flag (1,2 or 3)" annotation(Dialog(tab = "ST7B Parameters"));
+  parameter Real UEL_ex "Flag (1,2 or 3)" annotation(Dialog(tab = "ST7B Parameters"));
+end DataST7B;

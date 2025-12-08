@@ -1,0 +1,25 @@
+within OpalRT.ModelSets.Data.Exciters.IVOEX;
+partial record DataIVOEX
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real K1_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A1_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A2_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T1_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T2_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MAX1_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MIN1_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real K3_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A3_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A4_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T3_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T4_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MAX3_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MIN3_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real K5_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A5_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real A6_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T5_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real T6_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MAX5_ex annotation(Dialog(tab = "IVOEX Parameters"));
+  parameter Real MIN5_ex annotation(Dialog(tab = "IVOEX Parameters"));
+end DataIVOEX;

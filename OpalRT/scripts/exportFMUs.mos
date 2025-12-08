@@ -1,0 +1,24 @@
+﻿// Path to your WrappedModels package
+openModel("c:/git/EPFMU/OpalRT/ePHASORSIM/WrappedModels/package.mo");
+
+// Set advanced flags
+Advanced.CheckPackageRestriction := false;
+Advanced.FMI.xmlIgnoreProtected := false;
+Advanced.FMI.xmlIgnoreLocal := false;
+Advanced.FMI.BlackBoxModelDescription := false;
+Advanced.EnableCodeExport := true;
+Advanced.Define.NewJacobian := false;
+Advanced.Define.AimForHighAccuracy := false;
+
+// Read model names from package.order
+modelNames := Modelica.Utilities.Streams.readFile("c:/git/EPFMU/OpalRT/ePHASORSIM/WrappedModels/package.order");
+
+// Loop through each model and export FMU
+for i in 1:size(modelNames, 1) loop
+  modelName := modelNames[i];
+  if modelName <> "" and modelName <> "package" then
+    fullModelName := "OpalRT.ePHASORSIM.WrappedModels." + modelName;
+    // Export FMU (Model Exchange + Co-Simulation, FMU 2.0, Windows 64-bit)
+    translateModelFMU(fullModelName, fmiVersion="1", fmiType="me");
+  end if;
+end for;

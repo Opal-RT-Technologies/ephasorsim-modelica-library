@@ -1,0 +1,23 @@
+within OpalRT.ModelSets.Data.Exciters.ESAC1A;
+partial record DataESAC1A
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real VAMAX_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real VAMIN_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real TE_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real TF_ex "(sec)" annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real KD_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real KE_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real VRMAX_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "ESAC1A Parameters"));
+end DataESAC1A;

@@ -1,0 +1,22 @@
+within OpalRT.ModelSets.Data.Exciters.EXST3;
+partial record DataEXST3
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real VIMAX_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real VIMIN_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KJ_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real VRMAX_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KG_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KP_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KI_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real EFDMAX_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real XL_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real VGMAX_ex annotation(Dialog(tab = "EXST3 Parameters"));
+  parameter Real THETAP_ex annotation(Dialog(tab = "EXST3 Parameters"));
+end DataEXST3;

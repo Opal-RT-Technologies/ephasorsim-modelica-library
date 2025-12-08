@@ -113,7 +113,7 @@ equation
           0},{65.3422,0},{65,0}},                                                                                                     color = {0, 0, 127}));
   connect(constant1.y, VF) annotation(Line(points={{85.5,80},{92.3711,80},{92.3711,
           80},{100,80}},                                                                                       color = {0, 0, 127}));
-  connect(Ecomp.y, lag1.u) annotation(
+  connect(Ecomp.y, lag1.u) annotation (
     Line(points = {{-80, 80}, {-70, 80}}, color = {0, 0, 127}));
   annotation(Documentation(info = "<html>
 <p>

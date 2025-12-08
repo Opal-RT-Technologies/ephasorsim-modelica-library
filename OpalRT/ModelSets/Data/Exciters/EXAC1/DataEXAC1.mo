@@ -1,0 +1,21 @@
+within OpalRT.ModelSets.Data.Exciters.EXAC1;
+partial record DataEXAC1
+  extends OpalRT.ModelSets.Data.Exciters.ExciterData;
+  parameter Real TR_ex "(sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real TB_ex "(sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real TC_ex "(sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real KA_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real TA_ex "(sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real VRMAX_ex "or zero" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real VRMIN_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real TE_ex "(sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real KF_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real TF_ex "(>0) (sec)" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real KC_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real KD_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real KE_ex "or zero" annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real E1_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real SE_E1_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real E2_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+  parameter Real SE_E2_ex annotation(Dialog(tab = "EXAC1 Parameters"));
+end DataEXAC1;
