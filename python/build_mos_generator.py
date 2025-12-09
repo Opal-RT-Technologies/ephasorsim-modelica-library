@@ -1,6 +1,4 @@
 import argparse
-from ephasor_fmu_interface import FmuInterfaceBuilder
-from modelica_parser import ModelicaParser
 import json
 import os
 import pathlib
@@ -19,8 +17,8 @@ if not success then
     end if;
 end if;
 
-print("[OpenModelica] Loading OpalRT.NonElectrical.PwPin model" + "\\n");
-success := loadModel(OpalRT.NonElectrical.PwPin); // workaround: with older OM versions, the PwPin is not automatically loaded for some reason
+print("[OpenModelica] Loading OpalRT library" + "\\n");
+success := loadModel(OpalRT);
 if not success then
     print("[OpenModelica] " + getErrorString() + "\\n");
     if exit_on_error then
@@ -36,7 +34,13 @@ nb_components := size(component_list, 1);
 moscript_format_build = '''// buildModelFMU for each components
 for i in 1:nb_components loop
     print("[OpenModelica] Building " + component_list[i] + ".fmu" + "\\n");
-    resultingFile := buildModelFMU(stringTypeName(component_list[i]), version="1.0", fmuType = "me", fileNamePrefix = component_list[i]);
+    startIndex := Modelica.Utilities.Strings.findLast(component_list[i], ".");
+    shortName := Modelica.Utilities.Strings.substring(
+        component_list[i],
+        startIndex + 1,
+        Modelica.Utilities.Strings.length(component_list[i])
+    );
+    resultingFile := buildModelFMU(stringTypeName(component_list[i]), version="1.0", fmuType = "me", fileNamePrefix = shortName);
 
     if Modelica.Utilities.Strings.isEmpty(resultingFile) then
         print("[OpenModelica] " + getErrorString() + "\\n");
@@ -118,10 +122,8 @@ if __name__ == "__main__":
     if not os.path.exists(args.build_dir):
         os.makedirs(args.build_dir)
 
-    component_dir = pathlib.Path(os.path.join(os.path.dirname(__file__), '..', 'OpalRT', 'GenUnits'))
-    blacklist = []
-    for element in args.blacklist:
-        blacklist += list(filter(None, element.split(',')))
+    component_dir = pathlib.Path(os.path.join(os.path.dirname(__file__), '..', 'OpalRT', 'ePHASORSIM', 'WrappedModels'))
+    blacklist = list(filter(None, args.blacklist.split(',')))
 
     component_list = list(filter(None, args.whitelist.split(',')))
     build_dir = pathlib.Path(os.path.join(args.build_dir))
@@ -142,13 +144,14 @@ if __name__ == "__main__":
         if not len(component_list) and component_name in blacklist:
             continue
 
-        genunit_lines = ModelicaParser.extract_class(component_file, component_name)
-        builder = FmuInterfaceBuilder(genunit_lines)
+        genunit_dir = os.path.dirname(component_file.as_posix()).replace(f"{component_dir.as_posix()}", "")
+        if genunit_dir.startswith('/Data'):
+            continue
 
-        with open(os.path.join(args.build_dir, f'{component_name}.mo'), 'w') as component_mo:
-            component_mo.writelines(builder.build())
+        genunit_dir_tree = ['OpalRT', 'ePHASORSIM', 'WrappedModels']
+        genunit_dir_tree.extend([x for x in genunit_dir.split('/') if x])
 
-        filtered_components.append(component_name)
+        filtered_components.append(f"{'.'.join(genunit_dir_tree)}.{component_name}")
 
     # save filtered component list to be used at later stages
     save_component_list(args.build_dir, filtered_components)

@@ -10,6 +10,14 @@ if not sys.platform.lower().startswith('win'):
 LOGGER = logging.getLogger("DYMOLA")
 
 
+def sanitize_model_name(model):
+    return model.replace(".", "_")
+
+
+def model_short_name(model):
+    return model.split(".")[-1]
+
+
 def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_sources=False, flags={}, no_exit_on_error=False):
     LOGGER.info(f"MODELICAPATH: {os.environ['MODELICAPATH']}")
     dymola = None
@@ -29,11 +37,13 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
         LOGGER.info("Checking Dymola license features")
         if not dymola.RequestOption("Standard"):
             # issue a warning instead of raising since this might work with demo license
-            LOGGER.warning("Dymola standard feature license check failed")
+            raise Exception("Dymola standard feature license check failed")
 
         if not dymola.RequestOption("SourceCodeGeneration") and keep_sources:
             raise Exception("Dymola source code generation feature license check failed. This feature is required for "
                             "compiling on remote targets or for exporting the model sources")
+        
+        LOGGER.info("All license features checks passed")
     except Exception as e:
         if dymola is not None:
             dymola.close()
@@ -56,17 +66,20 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
         if not dymola.verifyCompiler():
             raise DymolaException("Failed to setup compiler")
 
+        counter = 0
         for model in models:
+            counter += 1
+            fmu_model_name = model_short_name(model)
+            fmu_file_name = f"{fmu_model_name}.fmu"
+            final_fmu_path = os.path.abspath(os.path.join(build_dir, fmu_file_name))
+            if os.path.exists(final_fmu_path):
+                LOGGER.info(f"[{counter}/{len(models)}] Already built {fmu_model_name}.fmu. Skipping...")
+                continue
+
             dymola.system(f"mkdir {model}")
             dymola.cd(model)
 
-            model_file = "%s.mo" % model
             try:
-                # Loads the model for which we want to generate the FMU
-                res = dymola.openModel(f'{model_file}', changeDirectory=False)
-                if not res:
-                    raise DymolaException("Failed to load " + model_file)
-
                 # Sanity check first
                 res = dymola.checkModel(model)
                 if not res:
@@ -74,18 +87,19 @@ def build_fmus(dymola_home, build_dir, models, fmi_ver="1", debug=False, keep_so
                     raise DymolaException("Failed to verify model " + model)
 
                 # Call dymola to produce the fmu
-                LOGGER.info(f"Building {model}.fmu")
-                res = dymola.translateModelFMU(modelToOpen=model, storeResult=False, modelName=model, fmiVersion=fmi_ver, fmiType="me", includeSource=keep_sources)
-                fmu_path = os.path.abspath(os.path.join(build_dir, model, f"{model}.fmu"))
-                if not (res == model and os.path.exists(fmu_path)):
+                LOGGER.info(f"[{counter}/{len(models)}] Building {fmu_model_name}.fmu")
+                res = dymola.translateModelFMU(modelToOpen=model, storeResult=False, modelName=fmu_model_name, fmiVersion=fmi_ver, fmiType="me", includeSource=keep_sources)
+
+                fmu_path = os.path.abspath(os.path.join(build_dir, model, fmu_file_name))
+                if not (res == fmu_model_name and os.path.exists(fmu_path)):
                     raise DymolaException("Failed to generate FMU for " + model)
 
-                res = dymola.system(f"move {model}.fmu ..\\{model}.fmu")
-                if not res:
-                    raise DymolaException("Failed to generate FMU for " + model)
+                res = dymola.system(f"move {fmu_model_name}.fmu ..\\{fmu_file_name}")
 
-                fmu_path = os.path.abspath(os.path.join(build_dir, f"{model}.fmu"))
-                LOGGER.info(f"Successfully generated {fmu_path} ")
+                if not res or not os.path.exists(final_fmu_path):
+                    raise DymolaException(f"Failed to relocate {fmu_file_name}")
+
+                LOGGER.info(f"[{counter}/{len(models)}] Successfully generated {final_fmu_path} ")
             except DymolaException as e:
                 handle_dymola_exception(dymola, e, model)
                 if not no_exit_on_error:

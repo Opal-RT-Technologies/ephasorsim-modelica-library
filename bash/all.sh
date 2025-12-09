@@ -116,7 +116,7 @@ function build_remote_om() {
     ssh $target_user@$target_ip bash -s << 'EOF'
     pushd /tmp/build_modelica_xxxx/build > /dev/null
     source ../bash/linux.sh
-    build_local
+    build_local openmodelica
 EOF
 
     if [[ $? -eq 0 ]]; 

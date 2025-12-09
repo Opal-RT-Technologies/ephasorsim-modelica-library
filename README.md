@@ -22,10 +22,10 @@ This Modelica Library is intended for ePHASORSIM external components modelizatio
 ## Interface
 
 ePHASORSIM requires external components to conform to an interface for compatibility with the Solver. In general terms, each power pin (`OpalRT.NonElectrical.Connector.PwPin`) representing a bus must have its I/Os mapped as follows:
-* `busN_vr`: input voltage to the rectifier 
-* `busN_vi`: input voltage to the inverter
-* `busN_ir`: output current from the rectifier
-* `busN_ii`: output current from the inverter
+* `busN_vr`: input voltage (real term)
+* `busN_vi`: input voltage (imaginary term)
+* `busN_ir`: output current (real term)
+* `busN_ii`: output current (imaginary term)
 
 The resulting `model_description.xml` shall translate to this:
 ```
@@ -65,8 +65,6 @@ The resulting `model_description.xml` shall translate to this:
 </ScalarVariable>
   ...
 ```
-
-The `python/fmu_wrapper_generator.py` utility is useful convert an existing component to an external component compatible with ePHASORSIM.
 
 ## Utilities
 

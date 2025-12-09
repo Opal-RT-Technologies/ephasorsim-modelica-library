@@ -7,7 +7,7 @@ function build_local() {
 
     mkdir -p ./win32
     pushd ./win32 > /dev/null
-    COMMON_MODELICA_PATH="${LOCAL_MODELICA_PATH};$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ../sources))"
+    COMMON_MODELICA_PATH="${LOCAL_MODELICA_PATH};$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/OpalRT));"
     if [[ ${modelica_compiler} = "openmodelica" ]];
     then
         OPENMODELICALIBRARY="${COMMON_MODELICA_PATH}" "${LOCAL_OPEN_MODELICA_COMPILER}" "../sources/build.mos"
@@ -53,11 +53,11 @@ function build_remote_dymola() {
         exit 1
     fi
 
-    echo [$0] Sending building components on remote target ...
+    echo [$0] Building components on remote target ...
     ssh $target_user@$target_ip bash -s << 'EOF'
     pushd /tmp/build_dymola_xxxx/build/sources > /dev/null
     tar -xf src-components.tar.gz
-    make
+    make -j $(($(nproc) - 1))
 EOF
 
     if [[ $? -eq 0 ]]; 
