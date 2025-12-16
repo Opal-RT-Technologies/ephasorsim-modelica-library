@@ -66,4 +66,4 @@ function check_local_env() {
 }
 
 LOCAL_OPEN_MODELICA_COMPILER="/usr/openmodelica/OpenModelica/bin/omc"
-LOCAL_MODELICA_PATH="${HOME}/.modelica"
+LOCAL_MODELICA_PATH="${LOCAL_MODELICA_PATH}"
