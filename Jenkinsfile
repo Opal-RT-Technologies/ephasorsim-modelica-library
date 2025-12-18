@@ -63,8 +63,7 @@ node("${params.BUILD_AGENT}") {
         }
     }
     stage('Linux Build') {
-        // TODO: uncomment lock when ephasor label is available AND ssh keys are provisioned on ephasor nodes
-        // lock(label: 'ephasor') { 
+        lock(label: 'ephasor', variable: 'target_name') { 
             timeout(time: 120, unit: 'MINUTES') {
                 withCredentials([sshUserPrivateKey(
                         credentialsId: 'target-ssh-key', // (vault) ephasorsim/kv/target-ssh-key
@@ -76,11 +75,11 @@ node("${params.BUILD_AGENT}") {
                             sh """
                             bash 
                             # Disable real-time mode on ephasor target to unlock all CPU resources for the build
-                            ssh -i "${SSH_KEY_FILE}" -o StrictHostKeyChecking=no "${SSH_USERNAME}"@10.64.100.155 "syspart --set_rt_mode disable"
+                            ssh -i "${SSH_KEY_FILE}" -o StrictHostKeyChecking=no "${SSH_USERNAME}"@$target_name "syspart --set_rt_mode disable"
 
                             ./build.sh \
                                  --remote-only \
-                                 --target-ip 10.64.100.155 \
+                                 --target-ip $target_name \
                                  --target-user "${SSH_USERNAME}" \
                                  --ssh-key-file "${SSH_KEY_FILE}" \
                                  ${_whitelistArg} \
@@ -92,7 +91,7 @@ node("${params.BUILD_AGENT}") {
                     }
                 
             }
-        // }
+        }
     }
     stage('Packaging') {
         withConan() {
