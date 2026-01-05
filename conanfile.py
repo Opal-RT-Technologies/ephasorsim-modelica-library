@@ -3,8 +3,8 @@ import glob
 from conans import ConanFile, tools
 
 
-class ModelicaEPhasorComponents(ConanFile):
-    name = "modelica-ephasor-components"
+class EPhasorsimModelicaLibrary(ConanFile):
+    name = "ephasorsim-modelica-library"
     major_minor = "1.0"
     default_user = "opal-rt-ephasorsim"
 
