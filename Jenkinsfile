@@ -63,7 +63,7 @@ node("${params.BUILD_AGENT}") {
         }
     }
     stage('Linux Build') {
-        lock(label: 'ephasor', variable: 'target_name') { 
+        lock(label: 'RTLAB_RTOS_90', variable: 'target_name') { 
             timeout(time: 120, unit: 'MINUTES') {
                 withCredentials([sshUserPrivateKey(
                         credentialsId: 'target-ssh-key', // (vault) ephasorsim/kv/target-ssh-key
