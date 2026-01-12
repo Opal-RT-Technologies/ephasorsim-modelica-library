@@ -18,7 +18,7 @@ properties([parameters([
     string(
         name: 'BLACKLIST',
         defaultValue: '',
-        description: 'A coma-separated list of components to exclude from the build. Leave empty to not exclude any component.'
+        description: 'A coma-separated list of components to exclude from the build. Leave empty to build all components.'
     ),
     string(
         name: 'BUILD_AGENT',
