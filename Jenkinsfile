@@ -44,7 +44,7 @@ node("${params.BUILD_AGENT}") {
         checkout([$class: 'GitSCM',
             branches: [[name: "*/${env.BRANCH_NAME}"]],
             userRemoteConfigs: [[
-                url: 'git@gitlab.opal-rt.com:opal-rt-ephasorsim/modelica-ephasor-components.git',
+                url: 'git@gitlab.opal-rt.com:opal-rt-ephasorsim/ephasorsim-modelica-library.git',
                 credentialsId: 'vault-jenkins-ephasorsim-service-account'
             ]]
         ])
