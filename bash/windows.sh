@@ -7,7 +7,7 @@ function build_local() {
 
     mkdir -p ./win32
     pushd ./win32 > /dev/null
-    COMMON_MODELICA_PATH="${LOCAL_MODELICA_PATH};$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/OpalRT));"
+    COMMON_MODELICA_PATH="$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/));$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/MSL4));$(cygpath -t mixed $(realpath ${LOCAL_MODELICA_PATH}/OpalRT));"
     if [[ ${modelica_compiler} = "openmodelica" ]];
     then
         OPENMODELICALIBRARY="${COMMON_MODELICA_PATH}" "${LOCAL_OPEN_MODELICA_COMPILER}" "../sources/build.mos"
@@ -35,17 +35,18 @@ function build_remote_dymola() {
     no_exit_on_error=$1
     target_user=$2
     target_ip=$3
+    ssh_key=$4
 
-    ssh $target_user@$target_ip """
+    ssh_command "${ssh_key}" $target_user@$target_ip """
     rm -rf /tmp/build_dymola_xxxx/
     mkdir -p /tmp/build_dymola_xxxx/build/sources
     """
 
     echo [$0] Packaging all components sources ...
-    tar -acf src-components.tar.gz -C ./sources/src-components/ ./
+    tar -acf src-components.tar.gz -C sources/src-components .
 
     echo [$0] Transferring files to remote target ...
-    scp -q src-components.tar.gz $target_user@$target_ip:/tmp/build_dymola_xxxx/build/sources
+    scp_command "${ssh_key}" -q src-components.tar.gz $target_user@$target_ip:/tmp/build_dymola_xxxx/build/sources
 
     if [[ $? -ne 0 ]];
     then
@@ -54,19 +55,21 @@ function build_remote_dymola() {
     fi
 
     echo [$0] Building components on remote target ...
-    ssh $target_user@$target_ip bash -s << 'EOF'
+    ssh_command "${ssh_key}" $target_user@$target_ip bash -s << 'EOF'
     pushd /tmp/build_dymola_xxxx/build/sources > /dev/null
     tar -xf src-components.tar.gz
-    make -j $(($(nproc) - 1))
+    jobs=$(( $(nproc) - 1 ))
+    [ "$jobs" -lt 1 ] && jobs=1
+    make -j "$jobs"
 EOF
 
     if [[ $? -eq 0 ]]; 
     then
         mkdir -p ./linux64
         echo [$0] Retrieving FMU dynamic libs from remote target
-        scp $target_user@$target_ip:/tmp/build_dymola_xxxx/build/linux64/* ./linux64
+        scp_command "${ssh_key}" $target_user@$target_ip:/tmp/build_dymola_xxxx/build/linux64/* ./linux64
         echo [$0] Cleaning up remote target build directory
-        ssh $target_user@$target_ip """
+        ssh_command "${ssh_key}" $target_user@$target_ip """
         rm -rf /tmp/build_dymola_xxxx
         """
     fi
@@ -166,4 +169,4 @@ function check_local_env() {
 
 DYMOLAHOME="${DYMOLAHOME:-C:/Program Files/Dymola 2019}"
 LOCAL_OPEN_MODELICA_COMPILER="$(cygpath -t mixed "${OPENMODELICAHOME}/bin/omc.exe")"
-LOCAL_MODELICA_PATH="$(cygpath -t mixed ~/.modelica)"
+LOCAL_MODELICA_PATH="$(cygpath -t mixed "${LOCAL_MODELICA_PATH}")"

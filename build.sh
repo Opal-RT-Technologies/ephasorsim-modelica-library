@@ -11,28 +11,25 @@ function usage() {
         cat <<EOM
 build.sh [options] BUILD_DIR MODELICA_COMPILER:
 
-    Script to build FMUs from the OPAL-RT Modelica library.
+    Script to generate Modelica-based FMUs from the ePHASORSIM Modelica library.
 
-    Modelica dependencies must be installed prior to using this script. Before generating the FMUs, the script performs a check to 
-    ensure the environment is setup as expected. The configure.sh script facilitates the installation of those dependencies.
+    The Modelica Standard Library 4.0.0 must be available in your Open Modelica or Dymola installation. If it is not available, the configure.sh script
+    facilitates its installation. When running build.sh, the Modelica libraries are expected to be found in the following location:
+        <MODELICA_ROOT>/MSL4
+        <MODELICA_ROOT>/OpalRT
 
     On Windows:
-    1. The following folder structure is expected:
-        C:/Users/${USERNAME}/.modelica/
-        C:/Users/${USERNAME}/.modelica/Modelica 4.0.0
-        C:/Users/${USERNAME}/.modelica/OpalRT
-    2. The Open Modelica Installation is detected based upon the OPENMODELICAHOME environment variable
-    3. The Dymola Installation is detected based upon the DYMOLAHOME environment variable
+    1. The Open Modelica Installation is detected based upon the OPENMODELICAHOME environment variable
+    2. The Dymola Installation is detected based upon the DYMOLAHOME environment variable
 
     On Linux:
-    1. The following folder structure is expected:
-        /home/<TARGET-USER>/.modelica/
-        /home/<TARGET-USER>/.modelica/Modelica 4.0.0
-        /home/<TARGET-USER>/.modelica/OpalRT
-    2. Open Modelica is expected to be found at /usr/openmodelica/OpenModelica/bin/omc (provisioned with OPAL-RT Linux)
-    3. To build FMUs using Dymola for Linux targets, run this script on Windows and use --target-user --target-ip flags
+    1. Open Modelica is expected to be found at /usr/openmodelica/OpenModelica/bin/omc (provisioned with OPAL-RT Linux)
+    2. To build FMUs using Dymola for Linux targets, run this script on Windows and use --target-user, --target-ip  and --ssh-key-file flags
 
-    TIP: use \`ssh-copy-id -i path/to/key.pub username@remoteHost\` to avoid password prompting
+    Tip: Using Linux/Bash or Windows/Bash/MSYS2, use \`ssh-copy-id -i path/to/key.pub user@host\` to upload your public key to the remote target.
+    Tip: Use \`--ssh-key-file\` to specify the PRIVATE key for the remote connection (e.g., \`${HOME}/.ssh/id_ed25519\`).
+
+    Note: Remote builds are only supported for Dymola. To build FMUs for Linux targets using OpenModelica, clone this repository on the target machine and run build.sh locally. 
 
     positional arguments:
         BUILD_DIR               The destination directory where FMUs will be saved
@@ -42,18 +39,20 @@ build.sh [options] BUILD_DIR MODELICA_COMPILER:
         --help                  Print usage
         --target-ip             IP address of the remote target (this is used to initiate a ssh connection)
         --target-user           User name used to log on the remote target
+        --ssh-key-file          Path to the SSH private key file used to connect to the remote target
         --remote-only           Only build on the remote target
         --validate-models       Invoke checkModel on models instead of buildModelFMU (localhost only)
         --clean                 Cleanup BUILD_DIR before generating FMUs
         --no-exit-on-error      Keep building FMUs even though some FMUs fails to build
         --blacklist             Models to exclude from the build (comma separated list)
         --whitelist             Models to build. If this argument is not provided, all models are built. (comma separated list)
-
+        --modelica-root         Path to the Modelica libraries root (default: .modelica)
+        --export-sources        Export Modelica sources along with the FMUs (for Dymola only)
 EOM
         exit 0
 }
 
-VALID_ARGS=$(getopt -o '' --long help,clean,no-exit-on-error,remote-only,validate-models,target-user:,target-ip:,blacklist:,whitelist: -- "$@")
+VALID_ARGS=$(getopt -o '' --long help,clean,no-exit-on-error,remote-only,validate-models,export-sources,target-user:,target-ip:,blacklist:,whitelist:,modelica-root:,ssh-key-file: -- "$@")
 if [[ $? -ne 0 ]]; then
     usage
     exit 1;
@@ -78,6 +77,10 @@ while [ : ]; do
             TARGET_USER="$2"
             shift 2
             ;;
+        --ssh-key-file)
+            SSH_KEY_FILE="$2"
+            shift 2
+            ;;
         --blacklist)
             BLACKLIST_STR="$2"
             shift 2
@@ -85,6 +88,14 @@ while [ : ]; do
         --whitelist)
             WHITELIST_STR="$2"
             shift 2
+            ;;
+        --modelica-root)
+            LOCAL_MODELICA_PATH="$(realpath $2)"
+            shift 2
+            ;;
+        --export-sources)
+            NEED_SOURCES=true
+            shift
             ;;
         --validate-models)
             VALIDATE_MODELS=true
@@ -108,6 +119,7 @@ while [ : ]; do
 done
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+LOCAL_MODELICA_PATH="${LOCAL_MODELICA_PATH:-${SCRIPT_DIR}/modelica}"
 source "${SCRIPT_DIR}/bash/platform.sh"
 source "${SCRIPT_DIR}/bash/all.sh"
 
@@ -131,7 +143,7 @@ CLEAN_BUILD=${CLEAN_BUILD:-false}
 COMPILE_MODE_LOCAL=1
 COMPILE_MODE_REMOTE=2
 COMPILE_MODE=${COMPILE_MODE_LOCAL}
-NEED_SOURCES=false
+NEED_SOURCES=${NEED_SOURCES:-false}
 
 if [[ -n $TARGET_IP ]] || [[ -n $TARGET_USER ]];
 then
@@ -141,18 +153,18 @@ fi
 if [[ ${REMOTE_ONLY} = true ]];
 then
     COMPILE_MODE=${COMPILE_MODE_REMOTE}
-    if [[ -z $TARGET_IP ]] || [[ -z $TARGET_USER ]];
+    if [[ -z $TARGET_IP ]] || [[ -z $TARGET_USER ]] || [[ -z $SSH_KEY_FILE ]];
     then
-        echo "ERROR: --remote-only requires to provide --target-ip and --target-user as well"
+        echo "ERROR: --remote-only requires to provide --target-ip, --target-user and --ssh-key-file as well"
         exit 1
     fi
 fi
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
 then
-    if [[ -z $TARGET_IP ]] || [[ -z $TARGET_USER ]];
+    if [[ -z $TARGET_IP ]] || [[ -z $TARGET_USER ]] || [[ -z $SSH_KEY_FILE ]];
     then
-        echo "ERROR: when using --target-ip or --target-user, both arguments need to be provided"
+        echo "ERROR: when using --target-ip, --target-user or --ssh-key-file, all three arguments need to be provided"
         exit 1
     fi
 fi
@@ -173,11 +185,7 @@ then
     echo "ERROR: MODELICA_COMPILER is required"
     exit 1
 fi
- 
-if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
-then
-    check_remote_env ${MODELICA_COMPILER} $TARGET_USER $TARGET_IP
-fi
+
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_LOCAL)) -ne 0 ]];
 then
@@ -220,7 +228,7 @@ then
 fi
 
 echo [$0] Generating mos build script ...
-(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/python/build_mos_generator.py ./sources ${ARGS})
+(set -x;"${PYTHON_EXE}" ${SCRIPT_DIR}/python/build_mos_generator.py --modelica-root "${LOCAL_MODELICA_PATH}" ./sources ${ARGS})
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_LOCAL)) -ne 0 ]];
 then
@@ -241,6 +249,6 @@ fi
 
 if [[ $((COMPILE_MODE & COMPILE_MODE_REMOTE)) -ne 0 ]];
 then
-    build_remote ${MODELICA_COMPILER} ${NO_EXIT_ON_ERROR} "${TARGET_USER}" "${TARGET_IP}"
+    build_remote ${MODELICA_COMPILER} ${NO_EXIT_ON_ERROR} "${TARGET_USER}" "${TARGET_IP}" "${SSH_KEY_FILE}"
     echo
 fi

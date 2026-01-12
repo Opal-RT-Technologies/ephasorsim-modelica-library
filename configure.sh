@@ -11,16 +11,14 @@ function usage() {
         cat <<EOM
 configure.sh [options]:
 
-    Script to install OPAL-RT and Modelica Standard Library (MSL) libraries. This script can configure both a local and remote environment.
+    Script to install ePHASORSIM Modelica Library and Modelica Standard Library (MSL) libraries.
 
     Options:
         --help                  Print usage
         --install-std-lib       Download and install Modelica Standard Library (MSL). A local MSL library .zip file
                                 will be used if found next to this script instead of downloading it.
         --force                 Overwrite files without prompting
-        --target-ip             IP address of the remote target (this is used to initiate a ssh connection)
-        --target-user           User name used to log on the remote target
-        --remote-only           Skip local configuration
+        --modelica-root         Path specifying where the Modelica libraries will be installed (default: ./modelica)
 
 EOM
         exit 0
@@ -53,7 +51,7 @@ function promptYN(){
 	esac
 }
 
-VALID_ARGS=$(getopt -o '' --long help,install-std-lib,remote-only,force,target-ip:,target-user: -- "$@")
+VALID_ARGS=$(getopt -o '' --long help,install-std-lib,remote-only,force,target-ip:,target-user:,modelica-root: -- "$@")
 if [[ $? -ne 0 ]]; then
     usage
     exit 1;
@@ -74,17 +72,9 @@ while [ : ]; do
             FORCE_OVERWRITE_FILES=true
             shift
             ;;
-        --target-ip)
-            TARGET_IP="$2"
+        --modelica-root)
+            MODELIA_ROOT="$2"
             shift 2
-            ;;
-        --target-user)
-            TARGET_USER="$2"
-            shift 2
-            ;;
-        --remote-only)
-            REMOTE_ONLY=true
-            shift
             ;;
         --) shift; 
             break 
@@ -122,7 +112,8 @@ fi
 INSTALL_STD_LIB=${INSTALL_STD_LIB:-false}
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
-MODELICA_ROOT="${HOME}/.modelica"
+EPHASORSIM_MODELICA_LIB_SOURCES="${SCRIPT_DIR}/modelica/OpalRT"
+MODELICA_ROOT="${MODELIA_ROOT:-${SCRIPT_DIR}/modelica}"
 MODELICA_STD_LIB_DESTINATION="${MODELICA_ROOT}/MSL4"
 MODELICA_OPALRT_DESTINATION="${MODELICA_ROOT}/OpalRT"
 MODELICA_STD_LIB_GITHUB="https://github.com/modelica/ModelicaStandardLibrary/releases/download"
@@ -171,40 +162,18 @@ then
         fi
     fi
 
-    if [[ ${FORCE_OVERWRITE_FILES} = false ]] && [[ -d "${MODELICA_OPALRT_DESTINATION}" ]];
+    if [[ "${MODELICA_ROOT}/OpalRT" != "${EPHASORSIM_MODELICA_LIB_SOURCES}" ]]; # Avoid overwriting the default source location
     then
-        echo "OpalRT modelica library already present at destination \"${MODELICA_OPALRT_DESTINATION}\""
-        promptYN "Do you wish to overwrite existing files" "(y/N)" "N" OVERWRITE_FILES
-        
-        [ ${OVERWRITE_FILES} = "N" ] && exit 1
+        if [[ ${FORCE_OVERWRITE_FILES} = false ]] && [[ -d "${MODELICA_OPALRT_DESTINATION}" ]];
+        then
+            echo "ePHASORSIM Modelica Library already present at destination \"${MODELICA_OPALRT_DESTINATION}\""
+            promptYN "Do you wish to overwrite existing files" "(y/N)" "N" OVERWRITE_FILES
+            
+            [ ${OVERWRITE_FILES} = "N" ] && exit 1
+        fi
+
+        echo "Installing ePHASORSIM Modelica Library at \"${MODELICA_OPALRT_DESTINATION}\""
+        cp -R "${EPHASORSIM_MODELICA_LIB_SOURCES}" "${MODELICA_ROOT}"
+        echo
     fi
-
-    echo "Installing OpalRT Modelica library at \"${MODELICA_OPALRT_DESTINATION}\""
-    cp -R "${SCRIPT_DIR}/OpalRT" "${MODELICA_ROOT}"
-    echo
-fi
-
-if [[ $((INSTALL_MODE & INSTALL_MODE_REMOTE)) -ne 0 ]];
-then
-    remote_temp_dir=$(ssh ${TARGET_USER}@${TARGET_IP} "mktemp -d")
-    rm -f OpalRT.tar.gz
-    echo "Packaging OpalRT modelica library"
-    tar -acf "${SCRIPT_DIR}/OpalRT.tar.gz" OpalRT
-    echo "Transfering files to remote target \"${TARGET_USER}@${TARGET_IP}\""
-    scp "${SCRIPT_DIR}/OpalRT.tar.gz" "${SCRIPT_DIR}/configure.sh" ${TARGET_USER}@${TARGET_IP}:"${remote_temp_dir}/"
-
-    if [[ -f "${SCRIPT_DIR}/${MODELICA_STD_LIB_REMOTE_NAME}" ]];
-    then
-        scp "${SCRIPT_DIR}/${MODELICA_STD_LIB_REMOTE_NAME}" ${TARGET_USER}@${TARGET_IP}:"${remote_temp_dir}/"
-    fi
-
-    ssh ${TARGET_USER}@${TARGET_IP} -t """
-    pushd ${remote_temp_dir} > /dev/null
-    echo Extracting OpalRT modelica library
-    tar -xf OpalRT.tar.gz
-    dos2unix ./configure.sh
-    bash -ic \"./configure.sh --install-std-lib\"
-    popd > /dev/null
-    rm -rf "${remote_temp_dir}"
-    """
 fi

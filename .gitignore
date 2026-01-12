@@ -2,5 +2,9 @@
 all_blocks/
 dymola_test/
 dymola_build/
+fmus/
 build/
 python/__pycache__/
+expected.log
+*.zip
+*.tar.gz

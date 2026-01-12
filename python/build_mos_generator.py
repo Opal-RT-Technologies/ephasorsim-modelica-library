@@ -115,6 +115,7 @@ if __name__ == "__main__":
     parser.add_argument('--no-exit-on-error', action='store_true', help='output directory')
     parser.add_argument('--force', action='store_true', help='output directory')
     parser.add_argument('--generate-mos', action='store_true', help='whether to generate a .mos to generate FMUs (openmodelica only)')
+    parser.add_argument('--modelica-root', type=str, help='Modelica root directory', default=f"{os.path.join(os.path.dirname(__file__), '..', 'modelica')}")
     parser.add_argument('build_dir', help='output directory')
 
     args = parser.parse_args()
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     if not os.path.exists(args.build_dir):
         os.makedirs(args.build_dir)
 
-    component_dir = pathlib.Path(os.path.join(os.path.dirname(__file__), '..', 'OpalRT', 'ePHASORSIM', 'WrappedModels'))
+    component_dir = pathlib.Path(os.path.join(args.modelica_root, 'OpalRT', 'ePHASORSIM', 'WrappedModels'))
     blacklist = list(filter(None, args.blacklist.split(',')))
 
     component_list = list(filter(None, args.whitelist.split(',')))
