@@ -24,11 +24,6 @@ properties([parameters([
         name: 'BUILD_AGENT',
         defaultValue: 'JS-W11-EPH-3',
         description: 'The Jenkins agent label to use for the build. The Modelica compiler must be installed on the selected agent.'
-    ),
-    string(
-        name: 'DYMOLA_HOME',
-        defaultValue: 'C:/Program Files/Dymola/Dymola2019',
-        description: 'The installation path of Dymola on the Jenkins agent.'
     )
 ])])
 
@@ -58,7 +53,7 @@ node("${params.BUILD_AGENT}") {
         sh "bash configure.sh --install-std-lib"
     }
     stage('Windows Build') {
-        withEnv(["DYMOLAHOME=${params.DYMOLA_HOME}"]) {
+        withEnv(["DYMOLAHOME=C:/Program Files/Dymola/Dymola2019"]) {
             sh "bash ./build.sh --export-sources ${_whitelistArg} ${_blacklistArg} ${_fmuBuildDirArg} ${params.MODELICA_COMPILER}"
         }
     }
@@ -71,23 +66,21 @@ node("${params.BUILD_AGENT}") {
                         passphraseVariable: 'SSH_PASSPHRASE',
                         usernameVariable: 'SSH_USERNAME'
                     )]) {
-                        withEnv(["DYMOLAHOME=${params.DYMOLA_HOME}"]) {
-                            sh """
-                            bash 
-                            # Disable real-time mode on ephasor target to unlock all CPU resources for the build
-                            ssh -i "${SSH_KEY_FILE}" -o StrictHostKeyChecking=no "${SSH_USERNAME}"@$target_name "syspart --set_rt_mode disable"
+                        sh """
+                        bash 
+                        # Disable real-time mode on ephasor target to unlock all CPU resources for the build
+                        ssh -i "${SSH_KEY_FILE}" -o StrictHostKeyChecking=no "${SSH_USERNAME}"@$target_name "syspart --set_rt_mode disable"
 
-                            ./build.sh \
-                                 --remote-only \
-                                 --target-ip $target_name \
-                                 --target-user "${SSH_USERNAME}" \
-                                 --ssh-key-file "${SSH_KEY_FILE}" \
-                                 ${_whitelistArg} \
-                                 ${_blacklistArg} \
-                                 ${_fmuBuildDirArg} \
-                                 ${params.MODELICA_COMPILER}
-                            """
-                        }
+                        ./build.sh \
+                                --remote-only \
+                                --target-ip $target_name \
+                                --target-user "${SSH_USERNAME}" \
+                                --ssh-key-file "${SSH_KEY_FILE}" \
+                                ${_whitelistArg} \
+                                ${_blacklistArg} \
+                                ${_fmuBuildDirArg} \
+                                ${params.MODELICA_COMPILER}
+                        """
                     }
                 
             }
