@@ -110,7 +110,7 @@ node("${params.BUILD_AGENT}") {
                 set -o xtrace
                 git config user.name 'jenkinsslaver'
                 git config user.email 'jenkinsslaver@opal-rt.com'
-                git tag --message="### CI build number: ${env.BUILD_NUMBER} ### URL: ${env.BUILD_URL}" ${tag}
+                git tag --message="### CI build number: ${env.BUILD_NUMBER} ### URL: ${env.BUILD_URL}" ${packageReference.tag}
                 export GIT_SSH_COMMAND="ssh -oStrictHostKeyChecking=no"
                 git push --push-option=ci.skip origin ${packageReference.tag}
                 """)
