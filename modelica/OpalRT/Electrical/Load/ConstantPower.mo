@@ -12,5 +12,17 @@ protected
 equation
   P_pu = -(p.vr * p.ir + p.vi * p.ii);
   Q_pu = -(p.vi * p.ir - p.vr * p.ii);
-  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics={  Line(origin = {-29.14, -1.13}, points = {{-62.1138, 0.256739}, {56.8599, 0.282886}}, thickness = 5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20), Text(origin = {-55.01, 36.61}, extent = {{-38.33, 8.2}, {73.12, -30.27}}, textString = "P+jQ"), Text(origin = {-55.03, -14.25}, extent = {{-38.33, 8.2}, {60.03, -27.7}}, textString = "Const. PQ")}));
+  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics={                                                                                                                                                           Text(origin={
+              -63.01,38.61},                                                                                                                                                                                                        extent = {{-38.33, 8.2}, {73.12, -30.27}}, textString = "P+jQ"), Text(origin={
+              -55.03,-20.25},                                                                                                                                                                                                        extent = {{-38.33, 8.2}, {60.03, -27.7}}, textString = "Const. PQ"),
+        Polygon(
+          points={{0,20},{0,-20},{30,0},{0,20}},
+          lineColor={0,0,0},
+          fillPattern=FillPattern.Solid,
+          fillColor={0,0,0}),
+        Rectangle(
+          extent={{-92,4},{0,-4}},
+          lineColor={0,0,0},
+          fillColor={0,0,0},
+          fillPattern=FillPattern.Solid)}));
 end ConstantPower;
