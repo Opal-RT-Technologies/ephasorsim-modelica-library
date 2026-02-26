@@ -1,6 +1,9 @@
 within OpalRT.Electrical.Renewable.PhotoVoltaic;
 model PVEU1 "Electrical control model for PV."
   extends OpalRT.Electrical.Renewable.WindTurbineGenerator.WT4.WT4E1;
+  
+  parameter Real PMX = 1.0 "- Max power From PV plant, MW" annotation(Dialog(tab = "Dynamic parameters"));
+  
   annotation(Documentation(info = "<html>
 
 <p>
