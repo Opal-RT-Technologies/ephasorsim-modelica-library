@@ -18,8 +18,8 @@ model WT4E1 "Electrical control models for Type 4 wind generator"
   parameter Real dPMN = -0.5 "- Min limit in power PI controller (pu)" annotation(Dialog(tab = "Dynamic parameters"));
   parameter Real T_POWER = 0.05 "- Power filter time constant" annotation(Dialog(tab = "Dynamic parameters"));
   parameter Real KQi = 0.1 "- MVAR/Volt gain" annotation(Dialog(tab = "Dynamic parameters"));
-  parameter Real VMINCL = 0.9 annotation(Dialog(tab = "Dynamic parameters"));
-  parameter Real VMAXCL = 1.1 annotation(Dialog(tab = "Dynamic parameters"));
+  parameter Real VMINCL = 0.9 "- Minimum voltage limit" annotation(Dialog(tab = "Dynamic parameters"));
+  parameter Real VMAXCL = 1.1 "- Maximum voltage limit" annotation(Dialog(tab = "Dynamic parameters"));
   parameter Real KVi = 120 "- Volt/MVAR gain" annotation(Dialog(tab = "Dynamic parameters"));
   parameter Real Tv = 0.05 "- Lag time constant in WindVar controller" annotation(Dialog(tab = "Dynamic parameters"));
   parameter Real Tp = 0.05 "- Pelec filter in fast PF controller" annotation(Dialog(tab = "Dynamic parameters"));
