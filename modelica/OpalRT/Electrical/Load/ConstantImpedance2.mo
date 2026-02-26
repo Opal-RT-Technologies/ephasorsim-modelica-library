@@ -8,5 +8,19 @@ block ConstantImpedance2
 equation
   p.vr = R * p.ir - X * p.ii;
   p.vi = X * p.ir + R * p.ii;
-  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics={  Line(origin = {-29.14, -1.13}, points = {{-62.1138, 0.256739}, {56.8599, 0.282886}}, thickness = 5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20), Text(origin = {-55.0132, 36.6074}, extent = {{-38.33, 8.2}, {73.1249, -30.2651}}, textString = "R+jX")}));
+  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}},
+        preserveAspectRatio=false,
+        initialScale=1)),                                                                                                                   Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}},
+        preserveAspectRatio=false,
+        initialScale=1),                                                                                                                                                                                                        graphics={                                                                                                                                                           Text(origin = {-55.0132, 36.6074}, extent = {{-38.33, 8.2}, {73.1249, -30.2651}}, textString = "R+jX"),
+        Polygon(
+          points={{0,20},{0,-20},{30,0},{0,20}},
+          lineColor={0,0,0},
+          fillPattern=FillPattern.Solid,
+          fillColor={0,0,0}),
+        Rectangle(
+          extent={{-92,4},{0,-4}},
+          lineColor={0,0,0},
+          fillColor={0,0,0},
+          fillPattern=FillPattern.Solid)}));
 end ConstantImpedance2;

@@ -20,5 +20,15 @@ equation
   X = K * Q_pu;
   p.vr = -(R * p.ir - X * p.ii);
   p.vi = -(X * p.ir + R * p.ii);
-  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), experiment(StartTime = 0, StopTime = 100, Tolerance = 0.01, Interval = 0.01), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics={  Line(origin = {-29.14, 20.289}, points = {{-62.1138, 0.256739}, {56.8599, 0.282886}}, thickness = 5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20), Text(origin = {-62.2389, 56.9581}, extent = {{-38.33, 8.2}, {73.12, -30.27}}, textString = "P+jQ"), Rectangle(origin = {0.267738, -0.133869}, extent = {{-99.8661, 99.4645}, {99.8661, -99.4645}}), Text(origin = {-135.952, -3.91}, extent = {{51.7855, 4.60565}, {73.12, -30.27}}, textString = "P"), Text(origin = {-136.233, -64.53}, extent = {{51.79, 4.61}, {71.5796, -26.6756}}, textString = "Q")}));
+  annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), experiment(StartTime = 0, StopTime = 100, Tolerance = 0.01, Interval = 0.01), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics={                                                                                                                                                            Text(origin = {-62.2389, 56.9581}, extent = {{-38.33, 8.2}, {73.12, -30.27}}, textString = "P+jQ"), Rectangle(origin = {0.267738, -0.133869}, extent = {{-99.8661, 99.4645}, {99.8661, -99.4645}}), Text(origin = {-135.952, -3.91}, extent = {{51.7855, 4.60565}, {73.12, -30.27}}, textString = "P"), Text(origin = {-136.233, -64.53}, extent = {{51.79, 4.61}, {71.5796, -26.6756}}, textString = "Q"),
+        Rectangle(
+          extent={{-92,24},{0,16}},
+          lineColor={0,0,0},
+          fillColor={0,0,0},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{0,40},{0,0},{30,20},{0,40}},
+          lineColor={0,0,0},
+          fillPattern=FillPattern.Solid,
+          fillColor={0,0,0})}));
 end ConstantImpedanceVariable;
