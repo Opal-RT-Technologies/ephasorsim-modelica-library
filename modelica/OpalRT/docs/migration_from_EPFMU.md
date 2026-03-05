@@ -1,16 +1,15 @@
-# What Changed in the EPFMU Library & Why It Matters
+# Migration from EPFMU to ePHASORSIM Modelica Library 1.0.0
 
-To understand what has been recently changed in the EPFMU library, let's compare the `GENROU_ESST4B_IEE2ST_IEEEG1` Generating Unit (GenUnit) model, before and after changes have been applied.
+This document describes the architectural changes introduced in the migration from the legacy EPFMU library to the ePHASORSIM Modelica Library 1.0.0. To illustrate the changes, we compare the `GENROU_ESST4B_IEE2ST_IEEEG1` Generating Unit (GenUnit) model, before and after the migration.
 
 1.  **Architecture refactor — from monolithic to template-based**  
-    The new model is now a `model` that **extends `GenUnitTypeF1`** and **redeclares** its subcomponents (GENROU, ESST4B, IEE2ST, IEEG1) and the data blocks. The old version was a self-contained `class` that instantiated and wired every component locally. This removes 100% of explicit `connect()` code from the concrete model (old: **23 connections**, new: **0**), shifting wiring into the shared base class.
+    The new model is now a `model` that **extends `GenUnitTypeF1`** and **redeclares** its subcomponents (GENROU, ESST4B, IEE2ST, IEEG1). The old version was a self-contained `class` that instantiated and wired every component locally. This removes 100% of explicit `connect()` code from the concrete model (old: **23 connections**, new: **0**), shifting wiring into the shared base class.
 
-2.  **Parameters externalized to data records**  
-    Instead of hardcoded numeric defaults in the model, the new version **aliases parameters** to fields of **redeclared data records**:  
-    `PlantGeneralData_003`, `GENROU_002`, `ESST4B_001`, `IEE2ST_001`, `IEEEG1_001`. This separates *topology/equations* from *datasets* and standardizes dialogs across units.
+2.  **Parameters externalized**  
+    Instead of hardcoded numeric defaults in the model, the new version **uses configurable parameters** declared directly inside each redeclared component. This separates *topology/equations* from *parameter values* and standardizes dialogs across units.
 
 3.  **Behavioral surface preserved, UI made consistent**  
-    The same domains and counts of parameters are being kept (both versions define **84** parameters and the same tab grouping for *General / GENROU / IEE2ST / ESST4B / IEEEG1*), so the user-facing configuration surface stays familiar while becoming data-driven.
+    The same domains and counts of parameters are being kept (both versions define **84** parameters and the same tab grouping for *General / GENROU / IEE2ST / ESST4B / IEEEG1*), so the user-facing configuration surface stays familiar.
 
 4.  **Limiter handling simplified**  
     The old version computed `noVOEL = Modelica.Constants.inf` via an `initial equation` and fed a `Constant` block; the new version directly declares `noVOEL = Modelica.Constants.inf` and assigns it via `const1(k = noVOEL)` inside the `extends (…)` list—cleaner and easier to audit.
@@ -37,11 +36,6 @@ To understand what has been recently changed in the EPFMU library, let's compare
         redeclare Electrical.Control.Excitation.ESST4B exciter(...),
         redeclare Electrical.Control.Stabilizer.IEE2ST stabilizer(...),
         redeclare Electrical.Control.TurbineGovernor.IEEEG1 turbineGovernor(...),
-        redeclare Data.General.PlantGeneralData_003 generalData,
-        redeclare Data.Machines.GENROU.GENROU_002 machineData,
-        redeclare Data.Exciters.ESST4B.ESST4B_001 exciterData,
-        redeclare Data.Stabilizers.IEE2ST.IEE2ST_001 stabilizerData,
-        redeclare Data.Governors.IEEEG1.IEEEG1_001 governorData,
         const1(k = noVOEL));
     end GENROU_ESST4B_IEE2ST_IEEEG1;
     ```
@@ -55,13 +49,13 @@ To understand what has been recently changed in the EPFMU library, let's compare
 
 *   **Old**: parameters had **numeric defaults** directly in the model (e.g., `IBUS=100`, `P_gen=1000`, various ESST4B/IEE2ST/IEEG1 values). The same parameter appears across tabs but the values live in the model code.
 
-*   **New**: each parameter is an **alias** to a field in a **redeclared data record** (e.g., `IBUS = generalData.IBUS`, `Xd = machineData.Xd`, `K1_pss = stabilizerData.K1`, `PMAX_tg = governorData.PMAX_tg`). The dialog tabs remain: *General*, *GENROU Parameters*, *IEE2ST Parameters*, *ESST4B Parameters*, *IEEEG1*.
+*   **New**: each parameter is **configurable** (e.g., `IBUS`, `Xd`, `K1_pss`, `PMAX_tg`). The dialog tabs remain: *General*, *GENROU Parameters*, *IEE2ST Parameters*, *ESST4B Parameters*, *IEEEG1*.
 
 **Advantages**:
 
-*   **Separation of concerns**—equations in the model, numbers in datasets.
-*   **Repeatability & governance**—it is possible to version `_001/_002/_003` datasets, cite them in studies, and swap configurations by changing only a `redeclare`.
-*   **Consistency**—the same dataset can drive several unit models with identical UI tabs and field names.
+*   **Separation of concerns**—equations in the model, parameter values in component declarations.
+*   **Repeatability & governance**—component configurations can be versioned and swapped by changing only a `redeclare`.
+*   **Consistency**—the same component configuration can drive several unit models with identical UI tabs and field names.
 
 ***
 
@@ -101,10 +95,10 @@ To understand what has been recently changed in the EPFMU library, let's compare
     Moving to **`GenUnitTypeF1` + `redeclare`** unifies how Type-F units are built and wired. Future updates to the shared topology land in one place, reducing regression risk across your library.
 
 2.  **Configurability & reuse**  
-    Because parameters are sourced from **data records**, creating machine or control variants (OEM packages, study cases, testbeds) becomes a matter of swapping `redeclare Data.…`—no internal edits or re-wiring needed.
+    Because parameters are configurable, creating machine or control variants (OEM packages, study cases, testbeds) becomes a matter of swapping component redeclares—no internal edits or re-wiring needed.
 
 3.  **Traceability & reproducibility**  
-    Named datasets like **`PlantGeneralData_003`** or **`GENROU_002`** can be version-controlled and cited in reports, satisfying model governance and facilitating apples-to-apples comparisons between runs.
+    Component configurations can be version-controlled and cited in reports, satisfying model governance and facilitating apples-to-apples comparisons between runs.
 
 4.  **Reduced error surface**  
     Eliminating 23 explicit `connect()` statements and local connectors lowers the chance of subtle wiring mistakes (wrong index, wrong polarity, forgotten connect) and simplifies model reviews.
@@ -117,9 +111,9 @@ To understand what has been recently changed in the EPFMU library, let's compare
 ## Ready-to-paste documentation blurb
 
 > **Model name:** *GENROU\_ESST4B\_IEE2ST\_IEEEG1*  
-> **Purpose:** Type-F synchronous generating unit with **GENROU** machine, **ESST4B** exciter, **IEE2ST** stabilizer, and **IEEEG1** turbine governor. The model **extends `GenUnitTypeF1`** and **redeclares** both the subcomponents and their **data records** (`PlantGeneralData_003`, `GENROU_002`, `ESST4B_001`, `IEE2ST_001`, `IEEEG1_001`). Parameters in the dialog are aliases to the data records, enabling straightforward swapping of datasets without modifying the topology. **VOEL** is disabled by setting `noVOEL = Modelica.Constants.inf` and passing `const1(k = noVOEL)` via the base type.
+> **Purpose:** Type-F synchronous generating unit with **GENROU** machine, **ESST4B** exciter, **IEE2ST** stabilizer, and **IEEEG1** turbine governor. The model **extends `GenUnitTypeF1`** and **redeclares** the subcomponents, enabling straightforward swapping of components without modifying the topology. **VOEL** is disabled by setting `noVOEL = Modelica.Constants.inf` and passing `const1(k = noVOEL)` via the base type.
 
-> **What’s new vs. previous implementation:** The earlier implementation instantiated and wired components locally, included numerous `connect()` statements, and embedded numeric defaults in the model. The new version centralizes wiring in the base class, removes local connectors, and sources all parameters from named data records—improving maintainability, configurability, and reproducibility.
+> **What’s new vs. previous implementation:** The earlier implementation instantiated and wired components locally, included numerous `connect()` statements, and embedded numeric defaults in the model. The new version centralizes wiring in the base class, removes local connectors, and centralizes all parameters—improving maintainability, configurability, and reproducibility.
 
 ***
 
@@ -139,11 +133,6 @@ To understand what has been recently changed in the EPFMU library, let's compare
 +     redeclare Electrical.Control.Excitation.ESST4B         exciter(...),
 +     redeclare Electrical.Control.Stabilizer.IEE2ST         stabilizer(...),
 +     redeclare Electrical.Control.TurbineGovernor.IEEEG1    turbineGovernor(...),
-+     redeclare Data.General.PlantGeneralData_003            generalData,
-+     redeclare Data.Machines.GENROU.GENROU_002              machineData,
-+     redeclare Data.Exciters.ESST4B.ESST4B_001              exciterData,
-+     redeclare Data.Stabilizers.IEE2ST.IEE2ST_001           stabilizerData,
-+     redeclare Data.Governors.IEEEG1.IEEEG1_001             governorData,
 +     const1(k = noVOEL));
 ```
 
@@ -256,7 +245,7 @@ Key characteristics captured below:
 
 *   Concrete **`model GENROU_ESST4B_IEE2ST_IEEEG1`** **extends `GenUnitTypeF1`**
 *   Subcomponents are **redeclared**; **wiring and connectors are inherited** from the base type
-*   Parameters are **aliased** to fields of **redeclared data records** (no numeric defaults inside the model)
+*   Parameters are **fully configurable** (no numeric defaults inside the model)
 
 ```mermaid
 classDiagram
@@ -275,7 +264,6 @@ class GENROU_ESST4B_IEE2ST_IEEEG1_new {
   +parameter Real noVOEL = Modelica.Constants.inf
   -- Parameters shown in dialogs --
   General, GENROU, IEE2ST, ESST4B, IEEEG1
-  -- All parameters are aliases to data record fields --
 }
 
 class GENROU~declared~ {
@@ -298,36 +286,6 @@ class IEEG1~declared~ {
   Electrical.Control.TurbineGovernor.IEEEG1
 }
 
-class PlantGeneralData_003 {
-  <<redeclare Data.General>>
-  +IBUS, M_ID, P_gen, Q_gen, Vt_abs, Vt_ang, SB, fn
-}
-
-class GENROU_002 {
-  <<redeclare Data.Machines.GENROU>>
-  +ZSOURCE_RE, Tdo_p, Tdo_s, Tqo_p, Tqo_s
-  +H, D, Xd, Xq, Xd_p, Xq_p, Xd_s, Xl, S1, S12
-}
-
-class ESST4B_001 {
-  <<redeclare Data.Exciters.ESST4B>>
-  +TR, KPR, KIR, VRMAX, VRMIN, TA
-  +KPM, KIM, VMMAX, VMMIN, KG, KP, KI
-  +VBMAX, KC, XL, THETAP
-}
-
-class IEE2ST_001 {
-  <<redeclare Data.Stabilizers.IEE2ST>>
-  +K1, K2, T1..T10, LSMAX, LSMIN, VCU, VCL
-  +ICONs: M0, M1, M2, M3
-}
-
-class IEEG1_001 {
-  <<redeclare Data.Governors.IEEEG1>>
-  +K, T1..T7, Uo, Uc, PMAX, PMIN
-  +K1..K8
-}
-
 %% Inheritance
 GENROU_ESST4B_IEE2ST_IEEEG1_new --|> GenUnitTypeF1 : extends
 
@@ -337,18 +295,11 @@ GENROU_ESST4B_IEE2ST_IEEEG1_new ..> ESST4B~declared~ : redeclare
 GENROU_ESST4B_IEE2ST_IEEEG1_new ..> IEE2ST~declared~ : redeclare
 GENROU_ESST4B_IEE2ST_IEEEG1_new ..> IEEG1~declared~ : redeclare
 
-%% Redeclarations of data records (parameter providers)
-GENROU_ESST4B_IEE2ST_IEEEG1_new ..> PlantGeneralData_003 : redeclare data
-GENROU_ESST4B_IEE2ST_IEEEG1_new ..> GENROU_002           : redeclare data
-GENROU_ESST4B_IEE2ST_IEEEG1_new ..> ESST4B_001           : redeclare data
-GENROU_ESST4B_IEE2ST_IEEEG1_new ..> IEE2ST_001           : redeclare data
-GENROU_ESST4B_IEE2ST_IEEEG1_new ..> IEEG1_001            : redeclare data
-
 %% Note: connectors and connections are inherited from GenUnitTypeF1,
 %% so we intentionally do not show local connect() in the new model.
 ```
 
-> The diagram emphasizes **inheritance** and **redeclare** relationships, plus the **data‑driven** parameter sources that replace hardcoded defaults.
+> The diagram emphasizes **inheritance** and **redeclare** relationships, that replace hardcoded wiring.
 
 ***
 

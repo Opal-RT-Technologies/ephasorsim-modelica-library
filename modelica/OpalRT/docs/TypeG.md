@@ -1,4 +1,4 @@
-# OpalRT.GenUnits.TypeG — Documentation
+# OpalRT.ModelSets.TypeG — Documentation
 
 ## **1. High-Level Structure**
 
@@ -9,7 +9,7 @@ The **TypeG** package defines generator unit models that combine a **Synchronous
 *   **Partial Models:**
     *   `GenUnitTypeG1`: Standard interface for synchronous machine, exciter, and UEL.
 *   **Purpose:** Provide a modular, extensible template for generator units with excitation and UEL protection.
-*   **Key Features:** Highly modular, object-oriented, and fully parameterized via replaceable components and data records.
+*   **Key Features:** Highly modular, object-oriented, and fully parameterized via replaceable components.
 
 ***
 
@@ -24,12 +24,11 @@ The **TypeG** package defines generator unit models that combine a **Synchronous
     *   A **replaceable synchronous generator** (e.g., `GENROU`, `GENSAE`, `GENSAL`)
     *   A **replaceable exciter** (e.g., `EXAC1`, `EXAC4`, `ESST1A`, `EXPIC1`, `IEEEX1`, `ESDC2A`)
     *   A **replaceable UEL** (`UEL1` or `UEL2`)
-    *   **Replaceable data records** for machine, exciter, UEL, and plant general data
+
 
 ### **Replaceable Architecture**
 
-*   All major components and parameter records are declared as `replaceable`, enabling flexible instantiation and substitution in derived models.
-*   Parameterization is handled via data records, making configuration and scenario management straightforward.
+*   All major components are declared as `replaceable`, enabling flexible instantiation and substitution in derived models.
 
 ***
 
@@ -47,26 +46,14 @@ class GenUnitTypeG1 {
   synchronousGenerator : SynchronousGenerator
   exciter : Exciter
   uel : UnderExcitationLimiter
-  machineData : MachineDynamicData
-  generalData : PlantGeneralData
-  exciterData : ExciterData
-  uelData : UELData
 }
 class SynchronousGenerator { <<replaceable>> }
 class Exciter { <<replaceable>> }
 class UnderExcitationLimiter { <<replaceable>> }
-class MachineDynamicData { <<replaceable record>> }
-class PlantGeneralData { <<replaceable record>> }
-class ExciterData { <<replaceable record>> }
-class UELData { <<replaceable record>> }
 
 GenUnitTypeG1 o-- SynchronousGenerator
 GenUnitTypeG1 o-- Exciter
 GenUnitTypeG1 o-- UnderExcitationLimiter
-GenUnitTypeG1 o-- MachineDynamicData
-GenUnitTypeG1 o-- PlantGeneralData
-GenUnitTypeG1 o-- ExciterData
-GenUnitTypeG1 o-- UELData
 ```
 
 ***
@@ -80,19 +67,11 @@ class ConcreteModel { <<model>> extends GenUnitTypeG1 }
 class GENROU { }
 class EXAC1 { }
 class UEL1 { }
-class PlantGeneralData_001 { }
-class GENROU_001 { }
-class EXAC1_001 { }
-class UEL1_001 { }
 
 GenUnitTypeG1 <|-- ConcreteModel
 ConcreteModel o-- GENROU : synchronousGenerator
 ConcreteModel o-- EXAC1 : exciter
 ConcreteModel o-- UEL1 : uel
-ConcreteModel o-- PlantGeneralData_001 : generalData
-ConcreteModel o-- GENROU_001 : machineData
-ConcreteModel o-- EXAC1_001 : exciterData
-ConcreteModel o-- UEL1_001 : uelData
 ```
 
 ***
@@ -205,19 +184,14 @@ model GENROU_EXAC1_UEL2
       M0 = M0_uel,
       M1 = M1_uel,
       M2 = M2_uel
-    ),
-    redeclare Data.General.PlantGeneralData_003 generalData,
-    redeclare Data.Machines.GENROU.GENROU_002 machineData,
-    redeclare Data.Exciters.EXAC1.EXAC1_001 exciterData,
-    redeclare Data.UELs.UEL2.UEL2_001 uelData
+    )
   );
 
   parameter Real partType = 1;
-  // All parameters are aliased from the corresponding data records.
 end GENROU_EXAC1_UEL2
 ```
 
-*   **All parameters** are sourced from the corresponding data records, ensuring full configurability and reproducibility.
+*   **All parameters** ensure full configurability and reproducibility.
 *   **All three subsystems** (machine, exciter, UEL) are present and can be swapped or tuned independently.
 
 ***
@@ -225,11 +199,10 @@ end GENROU_EXAC1_UEL2
 ## **6. Key Points**
 
 *   **TypeG models** are modular generator unit templates supporting excitation and UEL protection, but **do not include turbine-governor or stabilizer loops**.
-*   **All parameters** are provided via replaceable data records, making the models easy to configure for different scenarios and studies.
+*   **All parameters** are fully configurable, making the models easy to configure for different scenarios and studies.
 *   **Signal connections** are clearly defined, supporting dynamic simulations, excitation system studies, and UEL coordination.
 *   **Extensibility:**
-    *   Swap any subsystem (machine, exciter, UEL) by redeclaring the component and its data record.
-    *   Use the same data-driven pattern as Types D–F for full reproducibility.
+    *   Swap any subsystem (machine, exciter, UEL) by redeclaring the component.
 
 ***
 
@@ -240,10 +213,6 @@ end GENROU_EXAC1_UEL2
 | Synchronous Gen. | `GENROU` (redeclared)                            |
 | Exciter          | `EXAC1` (redeclared)                             |
 | UEL              | `UEL2` (redeclared)                              |
-| Machine Data     | `GENROU_002`                                     |
-| Plant Data       | `PlantGeneralData_003`                           |
-| Exciter Data     | `EXAC1_001`                                      |
-| UEL Data         | `UEL2_001`                                       |
 
 ***
 

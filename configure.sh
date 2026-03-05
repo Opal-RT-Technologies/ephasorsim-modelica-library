@@ -51,7 +51,7 @@ function promptYN(){
 	esac
 }
 
-VALID_ARGS=$(getopt -o '' --long help,install-std-lib,remote-only,force,target-ip:,target-user:,modelica-root: -- "$@")
+VALID_ARGS=$(getopt -o 'h' --long help,install-std-lib,remote-only,force,target-ip:,target-user:,modelica-root: -- "$@")
 if [[ $? -ne 0 ]]; then
     usage
     exit 1;
@@ -60,7 +60,7 @@ fi
 eval set -- "$VALID_ARGS"
 while [ : ]; do
     case "$1" in
-        --help)
+        -h | --help)
             usage
             shift
             ;;

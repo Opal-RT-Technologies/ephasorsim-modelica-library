@@ -52,7 +52,7 @@ EOM
         exit 0
 }
 
-VALID_ARGS=$(getopt -o '' --long help,clean,no-exit-on-error,remote-only,validate-models,export-sources,target-user:,target-ip:,blacklist:,whitelist:,modelica-root:,ssh-key-file: -- "$@")
+VALID_ARGS=$(getopt -o 'h' --long help,clean,no-exit-on-error,remote-only,validate-models,export-sources,target-user:,target-ip:,blacklist:,whitelist:,modelica-root:,ssh-key-file: -- "$@")
 if [[ $? -ne 0 ]]; then
     usage
     exit 1;
@@ -61,7 +61,7 @@ fi
 eval set -- "$VALID_ARGS"
 while [ : ]; do
     case "$1" in
-        --help)
+        -h | --help)
             usage
             shift
             ;;

@@ -22,7 +22,7 @@ properties([parameters([
     ),
     string(
         name: 'BUILD_AGENT',
-        defaultValue: 'JS-W11-EPH-3',
+        defaultValue: 'dymola',
         description: 'The Jenkins agent label to use for the build. The Modelica compiler must be installed on the selected agent.'
     )
 ])])
