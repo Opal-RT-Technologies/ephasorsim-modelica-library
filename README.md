@@ -21,50 +21,23 @@ This Modelica Library is intended for ePHASORSIM external components modelizatio
 
 ## Interface
 
-ePHASORSIM requires external components to conform to an interface for compatibility with the Solver. In general terms, each power pin (`OpalRT.NonElectrical.Connector.PwPin`) representing a bus must have its I/Os mapped as follows:
-* `busN_vr`: input voltage (real term)
-* `busN_vi`: input voltage (imaginary term)
-* `busN_ir`: output current (real term)
-* `busN_ii`: output current (imaginary term)
+ePHASORSIM requires external components to conform to a formal interface specification. See **[InterfaceSpecification.md](InterfaceSpecification.md)** for complete details on:
 
-The resulting `model_description.xml` shall translate to this:
-```
-...
-<ScalarVariable
-    name="bus0_ii"
-    valueReference="38"
-    variability="continuous"
-    causality="output"
-    alias="noAlias">
-    <Real/>
-</ScalarVariable>
-<ScalarVariable
-    name="bus0_ir"
-    valueReference="39"
-    variability="continuous"
-    causality="output"
-    alias="noAlias">
-    <Real/>
-</ScalarVariable>
-...
-<ScalarVariable
-    name="bus0_vi"
-    valueReference="40"
-    variability="continuous"
-    causality="input"
-    alias="noAlias">
-    <Real start="0.0"/>
-</ScalarVariable>
-<ScalarVariable
-    name="bus0_vr"
-    valueReference="41"
-    variability="continuous"
-    causality="input"
-    alias="noAlias">
-    <Real start="0.0"/>
-</ScalarVariable>
-  ...
-```
+- Architecture overview and ModelSet template types
+- Parameter propagation
+- Power pin naming conventions
+- Regular I/O pins
+- Version metadata requirements
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Quick Start](modelica/OpalRT/docs/QuickStart.md) | Getting started guide |
+| [Model Sets](modelica/OpalRT/docs/ModelSets.md) | Power system model library overview |
+| [Changelog](CHANGELOG.md) | Version history and release notes |
+| [Migration from EPFMU](modelica/OpalRT/docs/migration_from_EPFMU.md) | Architectural changes from EPFMU to 1.0.0 |
+| [Interface Specification](InterfaceSpecification.md) | Formal interface specification |
 
 ## Utilities
 
@@ -73,16 +46,14 @@ The resulting `model_description.xml` shall translate to this:
 ```
 configure.sh [options]:
 
-    Script to install OPAL-RT and Modelica Standard Library (MSL) libraries. This script can configure both a local and remote environment.
+    Script to install ePHASORSIM Modelica Library and Modelica Standard Library (MSL) libraries.
 
     Options:
         --help                  Print usage
         --install-std-lib       Download and install Modelica Standard Library (MSL). A local MSL library .zip file
                                 will be used if found next to this script instead of downloading it.
         --force                 Overwrite files without prompting
-        --target-ip             IP address of the remote target (this is used to initiate a ssh connection)
-        --target-user           User name used to log on the remote target
-        --remote-only           Skip local configuration
+        --modelica-root         Path specifying where the Modelica libraries will be installed (default: ./modelica)
 ```
 
 ### `build.sh`
@@ -90,37 +61,43 @@ configure.sh [options]:
 ```
 build.sh [options] BUILD_DIR:
 
-    Script to build FMUs from the OPAL-RT Modelica library.
+Script to generate Modelica-based FMUs from the ePHASORSIM Modelica library.
 
-    Modelica dependencies must be installed prior to using this script. Before generating the FMUs, the script performs a check to
-    ensure the environment is setup as expected. The configure.sh script facilitates the installation of those dependencies.
+    The Modelica Standard Library 4.0.0 must be available in your Open Modelica or Dymola installation. If it is not available, the configure.sh script
+    facilitates its installation. When running build.sh, the Modelica libraries are expected to be found in the following location:
+        <MODELICA_ROOT>/MSL4
+        <MODELICA_ROOT>/OpalRT
 
     On Windows:
-    1. The following folder structure is expected:
-        C:/Users/${USERNAME}/.modelica/
-        C:/Users/${USERNAME}/.modelica/Modelica 4.0.0
-        C:/Users/${USERNAME}/.modelica/OpalRT
-    2. The Open Modelica Installation is detected based upon the OPENMODELICAHOME environment variable
+    1. The Open Modelica Installation is detected based upon the OPENMODELICAHOME environment variable
+    2. The Dymola Installation is detected based upon the DYMOLAHOME environment variable
 
     On Linux:
-    1. The following folder structure is expected:
-        /home/${USERNAME}/.modelica/
-        /home/${USERNAME}/.modelica/Modelica 4.0.0
-        /home/${USERNAME}/.modelica/OpalRT
-    2. Open Modelica is expected to be found at /usr/openmodelica/OpenModelica/bin/omc (provisioned with OPAL-RT Linux)
+    1. Open Modelica is expected to be found at /usr/openmodelica/OpenModelica/bin/omc (provisioned with OPAL-RT Linux)
+    2. To build FMUs using Dymola for Linux targets, run this script on Windows and use --target-user, --target-ip  and --ssh-key-file flags
 
-    TIP: use `ssh-copy-id -i path/to/key.pub username@remoteHost` to avoid password prompting
+    Tip: Using Linux/Bash or Windows/Bash/MSYS2, use `ssh-copy-id -i path/to/key.pub user@host` to upload your public key to the remote target.
+    Tip: Use `--ssh-key-file` to specify the PRIVATE key for the remote connection (e.g., `/home/KarlBenoit/.ssh/id_ed25519`).
+
+    Note: Remote builds are only supported for Dymola. To build FMUs for Linux targets using OpenModelica, clone this repository on the target machine and run build.sh locally.
+
+    positional arguments:
+        BUILD_DIR               The destination directory where FMUs will be saved
+        MODELICA_COMPILER       The Modelica compiler to use (dymola, openmodelica)
 
     options:
         --help                  Print usage
         --target-ip             IP address of the remote target (this is used to initiate a ssh connection)
         --target-user           User name used to log on the remote target
+        --ssh-key-file          Path to the SSH private key file used to connect to the remote target
         --remote-only           Only build on the remote target
         --validate-models       Invoke checkModel on models instead of buildModelFMU (localhost only)
         --clean                 Cleanup BUILD_DIR before generating FMUs
         --no-exit-on-error      Keep building FMUs even though some FMUs fails to build
         --blacklist             Models to exclude from the build (comma separated list)
         --whitelist             Models to build. If this argument is not provided, all models are built. (comma separated list)
+        --modelica-root         Path to the Modelica libraries root (default: .modelica)
+        --export-sources        Export Modelica sources along with the FMUs (for Dymola only)
 ```
 
 ## Usage
@@ -135,7 +112,7 @@ build.sh [options] BUILD_DIR:
    ./configure.sh --install-std-lib
    ```
 
-2. Build
+3. Build
     ```bash
    ./build.sh build_dir
    ```

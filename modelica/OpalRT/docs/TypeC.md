@@ -1,4 +1,4 @@
-# OpalRT.GenUnits.TypeC — Documentation
+# OpalRT.ModelSets.TypeC — Documentation
 
 ## 🧩 High-Level Structure
 
@@ -10,11 +10,6 @@ The **TypeC Package** defines a partial model `GenUnitTypeC1` that encapsulates 
 
 *   **Synchronous Generator**: `Electrical.PartialModel.SynchronousGenerator`
 *   **Turbine Governor**: `Electrical.PartialModel.TurbineGovernor`
-*   **Data Records**:
-    *   `Data.Machines.MachineDynamicData`
-    *   `Data.General.PlantGeneralData`
-    *   `Data.Governors.GovernorData`
-
 ### 🔌 Connectors
 
 *   `TRIP`: Input interface pin for trip signal
@@ -42,7 +37,7 @@ Each major component is declared as **replaceable**, allowing for flexible insta
 
 ## 🧭 Comparison with TypeA Package
 
-Models in the **TypeA Package** include only the **Synchronous Generator**, without excitation or governor systems. TypeC models expand upon this by integrating the **Turbine-Governor** and associated data records, making it suitable for more dynamic simulations and control scenarios.
+Models in the **TypeA Package** include only the **Synchronous Generator**, without excitation or governor systems. TypeC models expand upon this by integrating the **Turbine-Governor**, making it suitable for more dynamic simulations and control scenarios.
 
 ***
 
@@ -76,15 +71,8 @@ classDiagram
         +dGREF
     }
 
-    class MachineDynamicData
-    class PlantGeneralData
-    class GovernorData
-
     GenUnitTypeC1 --> SynchronousGenerator : contains
     GenUnitTypeC1 --> TurbineGovernor : contains
-    GenUnitTypeC1 --> MachineDynamicData : uses
-    GenUnitTypeC1 --> PlantGeneralData : uses
-    GenUnitTypeC1 --> GovernorData : uses
     SynchronousGenerator <--> TurbineGovernor : connected
 ```
 
@@ -99,16 +87,10 @@ classDiagram
     class GenUnitTypeC1
     class GENROU
     class GovernorModel
-    class PlantGeneralData_001
-    class MachineDynamicData_001
-    class GovernorData_001
 
     GenUnitTypeC1 <|-- ExtendedModel
     ExtendedModel --> GENROU : redeclare synchronousGenerator
     ExtendedModel --> GovernorModel : redeclare turbineGovernor
-    ExtendedModel --> PlantGeneralData_001 : redeclare generalData
-    ExtendedModel --> MachineDynamicData_001 : redeclare machineData
-    ExtendedModel --> GovernorData_001 : redeclare governorData
 ```
 
 ### 🧬 Mermaid Class Diagram: Connections in `GenUnitTypeC1`
@@ -186,9 +168,6 @@ classDiagram
     +bus0 : PwPin
     synchronousGenerator : SynchronousGenerator
     turbineGovernor : TurbineGovernor
-    machineData : MachineDynamicData
-    generalData : PlantGeneralData
-    governorData : GovernorData
   }
 
   %% Concrete Model
@@ -197,9 +176,6 @@ classDiagram
     extends GenUnitTypeC1
     // redeclare GENROU synchronousGenerator
     // redeclare IEESGO turbineGovernor
-    // redeclare GENROU_001 machineData
-    // redeclare PlantGeneralData_001 generalData
-    // redeclare IEESGO_001 governorData
   }
 
   %% Synchronous Generator
@@ -229,27 +205,10 @@ classDiagram
     dGREF
   }
 
-  %% Data Records
-  class GENROU_001 {
-    <<record>>
-    // All GENROU_001 parameters
-  }
-  class PlantGeneralData_001 {
-    <<record>>
-    // All PlantGeneralData_001 parameters
-  }
-  class IEESGO_001 {
-    <<record>>
-    // All IEESGO_001 parameters
-  }
-
   %% Relationships
   GenUnitTypeC1 <|-- GENROU_IEESGO
   GENROU_IEESGO o-- GENROU : synchronousGenerator
   GENROU_IEESGO o-- IEESGO : turbineGovernor
-  GENROU_IEESGO o-- GENROU_001 : machineData
-  GENROU_IEESGO o-- PlantGeneralData_001 : generalData
-  GENROU_IEESGO o-- IEESGO_001 : governorData
 
   %% Main Signal Connections (as comments)
   %% - TRIP --> synchronousGenerator.TRIP

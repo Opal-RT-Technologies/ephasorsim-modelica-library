@@ -1,8 +1,8 @@
-# 🚀 Quick-Start Guide: Extending OpalRT GenUnit Templates
+# 🚀 Quick-Start Guide: Extending OpalRT ModelSet Templates
 
 ## 1. **Choose the Right Template**
 
-Select the partial model (`GenUnitTypeA1`, `GenUnitTypeB1`, ..., `GenUnitTypeF2`) that matches the complexity and control systems you need:
+Select the partial model that matches the complexity and control systems you need. For GenUnit types, choose from `GenUnitTypeA1` through `GenUnitTypeL1`:
 
 *   **Type A**: Generator only
 *   **Type B**: + Exciter
@@ -10,8 +10,16 @@ Select the partial model (`GenUnitTypeA1`, `GenUnitTypeB1`, ..., `GenUnitTypeF2`
 *   **Type D**: + Exciter & Turbine-Governor
 *   **Type E**: + Exciter & Stabilizer
 *   **Type F**: + Exciter, Turbine-Governor & Stabilizer
+*   **Type G**: + Exciter & UEL
+*   **Type H**: + Exciter & OEL
+*   **Type I**: + Exciter, Turbine-Governor & UEL
+*   **Type J**: + Exciter, Turbine-Governor & OEL
+*   **Type K**: + Exciter, UEL & OEL
+*   **Type L**: + Exciter, Turbine-Governor, Stabilizer & UEL
 
-> **Tip:** Use the class diagram and tables in the documentation to match your requirements.
+For other component types, extend the appropriate base class (e.g., `InjectionCore`, `TwoPinCore`). See the [Model Sets documentation](ModelSets.md) for the full hierarchy.
+
+> **Tip:** Use the class diagram and tables in the Model Sets documentation to match your requirements.
 
 ***
 
@@ -22,7 +30,7 @@ Extend the chosen partial model in your own Modelica package.
 
 ```modelica
 model MyGENROU_EXAC1A_GGOV1
-  extends OpalRT.GenUnits.TypeD.GenUnitTypeD1(
+  extends OpalRT.ModelSets.TypeD.GenUnitTypeD1(
     redeclare Electrical.Machine.SynchronousMachine.GENROU synchronousGenerator(
       // Optional: parameter overrides here
     ),
@@ -31,36 +39,18 @@ model MyGENROU_EXAC1A_GGOV1
     ),
     redeclare Electrical.Control.TurbineGovernor.GGOV1 turbineGovernor(
       // Optional: parameter overrides here
-    ),
-    redeclare Data.General.PlantGeneralData_001 generalData,
-    redeclare Data.Machines.GENROU.GENROU_001 machineData,
-    redeclare Data.Exciters.EXAC1A.EXAC1A_001 exciterData,
-    redeclare Data.Governors.GGOV1.GGOV1_001 governorData
+    )
   );
 end MyGENROU_EXAC1A_GGOV1;
 ```
 
-*   **redeclare**: Swap in your desired machine, exciter, governor, and data records.
-*   **Parameterization**: All numerical values are managed via the data records.
+*   **redeclare**: Swap in your desired machine, exciter, and governor.
 
 ***
 
-## 3. **Customize Data Records**
+## 3. **Customize Parameters**
 
-*   **Edit or create new data records** for your machine, exciter, governor, or stabilizer.
-*   **Example:** To change the generator’s reactance, edit `GENROU_001` or create `GENROU_002` with your values.
-
-```modelica
-record GENROU_002
-  extends Data.Machines.GENROU.MachineDynamicData(
-    Xd = 2.1,
-    Xq = 1.9,
-    // ... other parameters
-  );
-end GENROU_002;
-```
-
-*   **Reference your new record** in the model’s `redeclare` statement.
+*   **Edit parameter values** directly on each component (machine, exciter, governor, or stabilizer) using inline parameter overrides or the parameter dialog.
 
 ***
 
@@ -94,9 +84,9 @@ redeclare Electrical.Control.Excitation.EXAC1A exciter(
 
 ## 7. **Best Practices**
 
-*   **Version your data records** for traceability.
+*   **Version your parameter sets** for traceability.
 *   **Document your customizations** in the model’s annotation or comments.
-*   **Reuse data records** across models for consistency.
+*   **Reuse parameter sets** across models for consistency.
 *   **Leverage inheritance**: If you need a variant, extend your own model and override only what’s different.
 
 ***
@@ -105,12 +95,9 @@ redeclare Electrical.Control.Excitation.EXAC1A exciter(
 
 ```modelica
 model MyGENROU_ESST1A
-  extends OpalRT.GenUnits.TypeB.GenUnitTypeB1(
+  extends OpalRT.ModelSets.TypeB.GenUnitTypeB1(
     redeclare Electrical.Machine.SynchronousMachine.GENROU synchronousGenerator,
-    redeclare Electrical.Control.Excitation.ESST1A exciter,
-    redeclare Data.General.PlantGeneralData_002 generalData,
-    redeclare Data.Machines.GENROU.GENROU_002 machineData,
-    redeclare Data.Exciters.ESST1A.ESST1A_002 exciterData
+    redeclare Electrical.Control.Excitation.ESST1A exciter
   );
 end MyGENROU_ESST1A;
 ```
@@ -119,9 +106,8 @@ end MyGENROU_ESST1A;
 
 ## 9. **Troubleshooting**
 
-*   **Missing parameters?** Check that your data records include all required fields.
 *   **Connector mismatch?** Ensure you’re using the correct template for your system’s needs.
-*   **Simulation errors?** Validate parameter values and initial conditions in your data records.
+*   **Simulation errors?** Validate parameter values and initial conditions
 
 ***
 

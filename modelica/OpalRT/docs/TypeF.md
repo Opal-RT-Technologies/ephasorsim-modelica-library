@@ -1,16 +1,16 @@
-# OpalRT.GenUnits.TypeF — Documentation
+# OpalRT.ModelSets.TypeF — Documentation
 
 ## **1. High-Level Structure**
 
 ### **TypeF Package Overview**
 
-The **TypeF** package defines the most comprehensive generator unit models in the OpalRT.GenUnits library. These models combine a **Synchronous Machine**, an **Excitation System**, a **Turbine-Governor**, and a **Power System Stabilizer (PSS)**. TypeF models are designed for advanced dynamic studies where all major generator control loops and their interactions are relevant, such as grid integration, disturbance response, and control coordination.
+The **TypeF** package defines the most comprehensive generator unit models in the OpalRT.ModelSets library. These models combine a **Synchronous Machine**, an **Excitation System**, a **Turbine-Governor**, and a **Power System Stabilizer (PSS)**. TypeF models are designed for advanced dynamic studies where all major generator control loops and their interactions are relevant, such as grid integration, disturbance response, and control coordination.
 
 *   **Partial Models:**
     *   `GenUnitTypeF1`: Standard interface for all four subsystems.
     *   `GenUnitTypeF2`: Variant with additional trip logic input (`vTRIP`) for advanced protection or testing scenarios.
 *   **Purpose:** Provide a flexible, extensible template for generator units with all major control systems.
-*   **Key Features:** Highly modular, object-oriented, and fully parameterized via replaceable components and data records.
+*   **Key Features:** Highly modular, object-oriented, and fully parameterized via replaceable components.
 
 ***
 
@@ -26,12 +26,10 @@ The **TypeF** package defines the most comprehensive generator unit models in th
     *   A **replaceable exciter** (e.g., `ESST4B`, `EXAC1A`, `AC7B`)
     *   A **replaceable turbine-governor** (e.g., `IEEEG1`, `GGOV1`, `GAST`)
     *   A **replaceable stabilizer** (e.g., `IEE2ST`, `PSS2A`, `IEEEST`)
-    *   **Replaceable data records** for machine, exciter, governor, stabilizer, and plant general data
 
 ### **Replaceable Architecture**
 
-*   All major components and parameter records are declared as `replaceable`, enabling flexible instantiation and substitution in derived models.
-*   Parameterization is handled via data records, making configuration and scenario management straightforward.
+*   All major components are declared as `replaceable`, enabling flexible instantiation and substitution in derived models.
 
 ***
 
@@ -51,30 +49,15 @@ class GenUnitTypeF1 {
   exciter : Exciter
   turbineGovernor : TurbineGovernor
   stabilizer : Stabilizer
-  machineData : MachineDynamicData
-  generalData : PlantGeneralData
-  exciterData : ExciterData
-  governorData : GovernorData
-  stabilizerData : StabilizerData
 }
 class SynchronousGenerator { <<replaceable>> }
 class Exciter { <<replaceable>> }
 class TurbineGovernor { <<replaceable>> }
 class Stabilizer { <<replaceable>> }
-class MachineDynamicData { <<replaceable record>> }
-class PlantGeneralData { <<replaceable record>> }
-class ExciterData { <<replaceable record>> }
-class GovernorData { <<replaceable record>> }
-class StabilizerData { <<replaceable record>> }
 GenUnitTypeF1 o-- SynchronousGenerator : synchronousGenerator
 GenUnitTypeF1 o-- Exciter : exciter
 GenUnitTypeF1 o-- TurbineGovernor : turbineGovernor
 GenUnitTypeF1 o-- Stabilizer : stabilizer
-GenUnitTypeF1 o-- MachineDynamicData : machineData
-GenUnitTypeF1 o-- PlantGeneralData : generalData
-GenUnitTypeF1 o-- ExciterData : exciterData
-GenUnitTypeF1 o-- GovernorData : governorData
-GenUnitTypeF1 o-- StabilizerData : stabilizerData
 GenUnitTypeF2 --|> GenUnitTypeF1
 ```
 
@@ -92,21 +75,11 @@ class GENROU { }
 class ESST4B { }
 class IEE2ST { }
 class IEEG1 { }
-class PlantGeneralData_003 { }
-class GENROU_002 { }
-class ESST4B_001 { }
-class IEE2ST_001 { }
-class IEEG1_001 { }
 GenUnitTypeF1 <|-- ConcreteModel
 ConcreteModel o-- GENROU : synchronousGenerator
 ConcreteModel o-- ESST4B : exciter
 ConcreteModel o-- IEE2ST : stabilizer
 ConcreteModel o-- IEEG1 : turbineGovernor
-ConcreteModel o-- PlantGeneralData_003 : generalData
-ConcreteModel o-- GENROU_002 : machineData
-ConcreteModel o-- ESST4B_001 : exciterData
-ConcreteModel o-- IEE2ST_001 : stabilizerData
-ConcreteModel o-- IEEG1_001 : governorData
 ```
 
 ***
@@ -133,7 +106,7 @@ Here is a concrete example based on your provided file [GENROU\_ESST4B\_IEE2ST\_
 
 ```modelica
 model GENROU_ESST4B_IEE2ST_IEEEG1
-  extends OpalRT.GenUnits.TypeF.GenUnitTypeF1(
+  extends OpalRT.ModelSets.TypeF.GenUnitTypeF1(
     redeclare Electrical.Machine.SynchronousMachine.GENROU synchronousGenerator(
       IBUS = IBUS,
       ID = M_ID,
@@ -223,17 +196,12 @@ model GENROU_ESST4B_IEE2ST_IEEEG1
       K7 = K7_tg,
       K8 = K8_tg
     ),
-    redeclare Data.General.PlantGeneralData_003 generalData,
-    redeclare Data.Machines.GENROU.GENROU_002 machineData,
-    redeclare Data.Exciters.ESST4B.ESST4B_001 exciterData,
-    redeclare Data.Stabilizers.IEE2ST.IEE2ST_001 stabilizerData,
-    redeclare Data.Governors.IEEEG1.IEEEG1_001 governorData,
     const1(k = noVOEL)
   );
 end GENROU_ESST4B_IEE2ST_IEEEG1;
 ```
 
-*   **All parameters** are sourced from the corresponding data records, ensuring full configurability and reproducibility.
+*   **All parameters** ensure full configurability and reproducibility.
 *   **All four control systems** are present and can be swapped or tuned independently.
 
 ***
@@ -241,10 +209,10 @@ end GENROU_ESST4B_IEE2ST_IEEEG1;
 ## **6. Key Points**
 
 *   **TypeF models** are the most complete and flexible generator unit templates in the library, supporting all major control loops.
-*   **All parameters** are provided via replaceable data records, making the models easy to configure for different scenarios and studies.
+*   **All parameters** are fully configurable, making the models easy to configure for different scenarios and studies.
 *   **Signal connections** are clearly defined, supporting advanced dynamic simulations, control interaction studies, and grid integration analysis.
 *   **Extensibility:**
-    *   Swap any subsystem (machine, exciter, governor, stabilizer) by redeclaring the component and its data record.
+    *   Swap any subsystem (machine, exciter, governor, stabilizer) by redeclaring the component.
     *   Use `GenUnitTypeF2` for advanced trip/protection logic with the `vTRIP` input.
 
 ***
@@ -257,9 +225,4 @@ end GENROU_ESST4B_IEE2ST_IEEEG1;
 | Exciter          | `ESST4B` (redeclared)                                       |
 | Turbine-Governor | `IEEEG1` (redeclared)                                       |
 | Stabilizer (PSS) | `IEE2ST` (redeclared)                                       |
-| Machine Data     | `GENROU_002`                                                |
-| Plant Data       | `PlantGeneralData_003`                                      |
-| Exciter Data     | `ESST4B_001`                                                |
-| Governor Data    | `IEEEG1_001`                                                |
-| Stabilizer Data  | `IEE2ST_001`                                                |
 
