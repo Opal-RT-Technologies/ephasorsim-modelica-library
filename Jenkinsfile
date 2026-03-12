@@ -99,7 +99,10 @@ node("${params.BUILD_AGENT}") {
                 script: "conan inspect . --raw version --remote ${server_name}",
                 returnStdout: true
             ).trim()
-            packageReference = new PackageReference(package_name, package_version, "opal-rt-ephasorsim", "stable")
+
+            channel = env.BRANCH_NAME.startsWith('release') ? env.BRANCH_NAME.tokenize('/')[0].replace('-', '_') : "stable"
+
+            packageReference = new PackageReference(package_name, package_version, "opal-rt-ephasorsim", channel)
             runCommand(script: "conan upload --all --remote ${server_name} --confirm ${packageReference.full()}")
 
             if ((env.BRANCH_NAME == 'master') || ( env.BRANCH_NAME.startsWith('release-') && packageReference.has_tag)) {
