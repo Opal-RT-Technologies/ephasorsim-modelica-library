@@ -20,7 +20,7 @@ class EPhasorsimModelicaLibrary(ConanFile):
     revision_mode = "scm"
     short_paths = True
 
-    python_requires = ["conan-baseclasses/[>=12.0 <13.0]@opal-rt-buildsystem/stable", "ci-scripts/[>=2.0.0 <3.0.0]@opal-rt-buildsystem/stable"]
+    python_requires = ["conan-baseclasses/[>=12.0 <13.0]@opal-rt-buildsystem/release_2026.2", "ci-scripts/[>=2.0.0 <3.0.0]@opal-rt-buildsystem/release_2026.2"]
     python_requires_extend = "ci-scripts.CiScriptsBase", "conan-baseclasses.OpalBase"
 
     exports_sources = "fmus/**/*.fmu"
