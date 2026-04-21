@@ -5,7 +5,7 @@ from conans import ConanFile, tools
 
 class EPhasorsimModelicaLibrary(ConanFile):
     name = "ephasorsim-modelica-library"
-    major_minor = "1.0"
+    major_minor = "1.1"
     default_user = "opal-rt-ephasorsim"
 
     scm = {
