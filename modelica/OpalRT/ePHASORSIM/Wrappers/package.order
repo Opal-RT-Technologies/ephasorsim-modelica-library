@@ -13,3 +13,4 @@ FMUTemplateVRefGRefTrip
 FMUTemplateTwoPowerPin
 FMUTemplateTwoPowerPinControl
 SingleExciterFMU
+SingleGovernorFMU
