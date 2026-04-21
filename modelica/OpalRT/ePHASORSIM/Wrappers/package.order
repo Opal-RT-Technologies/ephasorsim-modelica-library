@@ -14,3 +14,4 @@ FMUTemplateTwoPowerPin
 FMUTemplateTwoPowerPinControl
 SingleExciterFMU
 SingleGovernorFMU
+SingleStabilizerFMU
