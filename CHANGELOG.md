@@ -2,6 +2,16 @@
 
 All notable changes to the ePHASORSIM Modelica Library are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- **Single-controller FMU wrappers** ([EP-2913], [EP-2915], [EP-2916]): 66 thin wrappers in `WrappedModels/` that export individual controllers as standalone FMI 1.0 Model Exchange FMUs, for use with ComponentEPhasorsim's `MixNativeFMU` unit-test harness.
+  - 37 excitation systems (AC7B, AC8B, ESAC1A–ESDC2A, ESST1A/3A/4B, SCRX, SEXS, EXAC1–EXAC4, EXDC2, EXPIC1, EXST1–3, IEEEX1/X2, IEEET1/T2/T3/T5, IVOEX, REXSYS, ST5B/6B/7B, URST5T)
+  - 20 turbine governors (BBGOV1, DEGOV1, GAST, GAST2A, GGOV1, HYGOV, HYGOV4, IEEEG1–G3, IEESGO, PIDGOV, TGOV1/3/5, WEHGOV, WESGOV, WSHYDD, WSHYGP, WSIEG1)
+  - 9 power system stabilizers (IEE2ST, IEEEST, PSS2A/2B, PSS3B, ST2CUT, STAB1/3/4)
+- **Base partial models** in `Wrappers/`: `SingleExciterFMU`, `SingleGovernorFMU`, `SingleStabilizerFMU` — provide FMU version metadata and bridge interface gaps (e.g. `ECOMP` output for exciters, `ECOMP` input for stabilizers).
+
 ## [1.0.0] — 2026-03-04
 
 First release under the **ePHASORSIM Modelica Library** name (previously **EPFMU 0.0.z**).
