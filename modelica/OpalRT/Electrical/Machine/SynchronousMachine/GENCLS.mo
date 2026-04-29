@@ -21,6 +21,7 @@ model GENCLS "Classical synchronous machine model in ePHASORsim internal library
   parameter Real D = 2;
   parameter Real ZSOURCE_IM = 0;
   parameter Real ZSOURCE_RE = 0;
+  parameter Boolean useInternalEFDLoop = true "When true, EFD is internally connected to EFD0";
   Real TELEC;
   Real ETERM_ang;
   Real PMECH1;
@@ -88,7 +89,9 @@ equation
   VI[2] = p.vi;
   VI[3] = p.ir;
   VI[4] = p.ii;
-  connect(EFD0, EFD) annotation(Line(points = {{-102, 20}, {-114, 20}, {-114, 28}, {-100, 28}}, color = {0, 0, 127}));
+  if useInternalEFDLoop then
+    connect(EFD0, EFD) annotation(Line(points = {{-102, 20}, {-114, 20}, {-114, 28}, {-100, 28}}, color = {0, 0, 127}));
+  end if;
   annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Documentation(info = "<html>
 <p>This is a classical model of synchronous generator. In this model, there are two dynamic equations regarding speed and rotor angle as the following: </p>
 <ul>
