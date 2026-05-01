@@ -6,6 +6,11 @@ All notable changes to the ePHASORSIM Modelica Library are documented in this fi
 
 ### Added
 
+- **Single-machine partType=2 FMU wrappers** ([EP-2920]): Replaced partType=1 GenUnit wrappers for GENROU, GENROE, GENSAL, GENSAE, and GENCLS with partType=2 `StateMachine` wrappers using the PIN2INOUT composition pattern.
+  - New `PwPinFMU` connector (`OpalRT.NonElectrical.Connector.PwPinFMU`) for FMI-compatible bus voltage interface.
+  - Monitoring outputs: `ANGLE`, `TELEC`, `EFD1`, `PMECH1` exposed as flat `RealOutput`.
+  - `useInternalEFDLoop` parameter added to `GENCLS` machine model for conditional EFD self-loop control.
+
 - **Single-controller FMU wrappers** ([EP-2913], [EP-2915], [EP-2916]): 66 thin wrappers in `WrappedModels/` that export individual controllers as standalone FMI 1.0 Model Exchange FMUs, for use with ComponentEPhasorsim's `MixNativeFMU` unit-test harness.
   - 37 excitation systems (AC7B, AC8B, ESAC1A–ESDC2A, ESST1A/3A/4B, SCRX, SEXS, EXAC1–EXAC4, EXDC2, EXPIC1, EXST1–3, IEEEX1/X2, IEEET1/T2/T3/T5, IVOEX, REXSYS, ST5B/6B/7B, URST5T)
   - 20 turbine governors (BBGOV1, DEGOV1, GAST, GAST2A, GGOV1, HYGOV, HYGOV4, IEEEG1–G3, IEESGO, PIDGOV, TGOV1/3/5, WEHGOV, WESGOV, WSHYDD, WSHYGP, WSIEG1)
