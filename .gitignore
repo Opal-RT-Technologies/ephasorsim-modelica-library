@@ -3,6 +3,8 @@ all_blocks/
 dymola_test/
 dymola_build/
 fmus/
+fmus_dym/
+fmus_om/
 build/
 python/__pycache__/
 expected.log
